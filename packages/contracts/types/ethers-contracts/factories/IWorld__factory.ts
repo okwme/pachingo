@@ -85,6 +85,69 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "deltaX",
+        type: "uint256",
+      },
+      {
+        internalType: "int256",
+        name: "deltaY",
+        type: "int256",
+      },
+      {
+        internalType: "uint256",
+        name: "wager",
+        type: "uint256",
+      },
+    ],
+    name: "bankHasEnoughFundsForBet",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "openBet",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "deltaX",
+        type: "uint256",
+      },
+      {
+        internalType: "int256",
+        name: "deltaY",
+        type: "int256",
+      },
+    ],
+    name: "calculateResults",
+    outputs: [
+      {
+        internalType: "bool[]",
+        name: "wentUp",
+        type: "bool[]",
+      },
+      {
+        internalType: "int256",
+        name: "accumulativeDeltaY",
+        type: "int256",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "bytes16",
         name: "namespace",
         type: "bytes16",
@@ -153,6 +216,19 @@ const _abi = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getBank",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "uint256",
@@ -198,6 +274,54 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "deltaX",
+        type: "uint256",
+      },
+      {
+        internalType: "int256",
+        name: "deltaY",
+        type: "int256",
+      },
+    ],
+    name: "getOdds",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "wager",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "odds",
+        type: "uint256",
+      },
+    ],
+    name: "getPayout",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -314,19 +438,6 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [],
-    name: "increment",
-    outputs: [
-      {
-        internalType: "uint32",
-        name: "",
-        type: "uint32",
-      },
-    ],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [
       {
         internalType: "contract IModule",
@@ -367,6 +478,30 @@ const _abi = [
     name: "isStore",
     outputs: [],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "deltaX",
+        type: "uint256",
+      },
+      {
+        internalType: "int256",
+        name: "deltaY",
+        type: "int256",
+      },
+    ],
+    name: "makeBet",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -468,6 +603,19 @@ const _abi = [
     ],
     name: "registerStoreHook",
     outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "resolveBet",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
     stateMutability: "nonpayable",
     type: "function",
   },

@@ -5,12 +5,47 @@ import { defineComponent, Type as RecsType, World } from "@latticexyz/recs";
 
 export function defineContractComponents(world: World) {
   return {
-    CounterTable: (() => {
-      const tableId = new TableId("", "counter");
+    OpenBet: (() => {
+      const tableId = new TableId("", "OpenBet");
       return defineComponent(
         world,
         {
-          value: RecsType.Number,
+          open: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    Bank: (() => {
+      const tableId = new TableId("", "Bank");
+      return defineComponent(
+        world,
+        {
+          held: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    BetTable: (() => {
+      const tableId = new TableId("", "BetTable");
+      return defineComponent(
+        world,
+        {
+          deltaX: RecsType.Number,
+          deltaY: RecsType.Number,
+          resolved: RecsType.Number,
+          wager: RecsType.Number,
+          odds: RecsType.Number,
+          wentUp: RecsType.T,
         },
         {
           metadata: {

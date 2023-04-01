@@ -55,12 +55,13 @@ export default class Graph extends PIXI.Container {
     if (this.currentlySelectedNode) {
       this.currentlySelectedNode.setSelected(false)
       if (this.currentlySelectedNode.row == selectedNode.row && this.currentlySelectedNode.column == selectedNode.column) {
-        return
-      } else {
         this.currentlySelectedNode = null
-      }
+        return
+      } 
+      this.currentlySelectedNode = null
     }
 
+    if (!this.nodes[selectedNode.column]) return
     if (!this.nodes[selectedNode.column][selectedNode.row]) return
 
     this.currentlySelectedNode = this.nodes[selectedNode.column][selectedNode.row]

@@ -4,37 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>a minimal MUD client</title>
+    <link rel="stylesheet" href="/src/style.css"/>
     <style>
-      *, *::before, *::after {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        font-family: "Averia", sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        height: 100vh;
-        width: 100vw;
-        overflow: hidden;
-      }
-
-      .full-screen {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background: gray;
-      }
-
-      .full-screen.transparent {
-        background: transparent;
-      }
     </style>
   </head>
   <body>

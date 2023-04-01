@@ -1,0 +1,6 @@
+export const INTERFACE_STATE = {
+  NOW: "NOW",
+  ONE_DAY: "ONE_DAY",
+  ONE_WEEK: "ONE_WEEK",
+  ALL_TIME: "ALL_TIME"
+}

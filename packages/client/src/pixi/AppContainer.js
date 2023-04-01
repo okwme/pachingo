@@ -8,13 +8,13 @@ export default class AppContainer extends PIXI.Container {
 
     this.graphics = new PIXI.Graphics();
 
-    this.graphics.beginFill(0xff0000)
-    this.graphics.drawRect(0, 0, 500, 500)
+    this.graphics.beginFill(0xd2f2d2)
+    this.graphics.drawRect(0, 0, this.W, this.H)
 
     this.addChild(this.graphics);
   }
 
   tick() {
-    
+
   }
 }

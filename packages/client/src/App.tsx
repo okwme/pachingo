@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useComponentValue } from "@latticexyz/react";
 import { useMUD } from "./MUDContext";
 import PixiWrapper from "./PixiWrapper.jsx";
+import UIWrapper from "./UIWrapper.jsx"
+import { INTERFACE_STATE } from "./constants.js"
 
 export const App = () => {
+
+  const [currentView, setCurrentView] = useState(INTERFACE_STATE.NOW)
+
   const {
     components: { CounterTable },
     singletonEntity,
@@ -13,10 +18,19 @@ export const App = () => {
 
   const counter = useComponentValue(CounterTable, singletonEntity);
 
+  const onBet = (timeSteps : Number, predictedValue : Number, betAmount : Number) : any => {
+    console.log('Sending bet: ', timeSteps, predictedValue, betAmount)
+  }
+
+  const onViewChange = (newView : any) => {
+    setCurrentView(newView)
+  }
+
   return (
     <>
       <PixiWrapper/>
-      <div className="full-screen transparent">
+      <UIWrapper currentView={currentView} onViewChange={onViewChange}/>
+      {/* <div className="full-screen transparent">
         <div>
           Counters: <span>{counter?.value ?? "??"}</span>
         </div>
@@ -37,7 +51,7 @@ export const App = () => {
         >
           Increment
         </button>
-      </div>
+      </div> */}
     </>
   );
 };

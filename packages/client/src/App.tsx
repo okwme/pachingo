@@ -15,7 +15,7 @@ export const App = () => {
   const {
     components: { CounterTable },
     singletonEntity,
-    network: { signer },
+    network: { signer, blockNumber },
     worldSend,
   } = useMUD();
 
@@ -29,19 +29,19 @@ export const App = () => {
   // shiiiiii  
   window.PACHINGO.setSelectedNode = setSelectedNode
 
-  const onBet = (timeSteps : Number, predictedValue : Number, betAmount : Number) : any => {
+  const onBet = (timeSteps: Number, predictedValue: Number, betAmount: Number): any => {
     console.log('Sending bet: ', timeSteps, predictedValue, betAmount)
   }
 
-  const onViewChange = (newView : any) => {
+  const onViewChange = (newView: any) => {
     setCurrentView(newView)
   }
 
   return (
     <>
-      <PixiWrapper selectedNode={selectedNode}/>
-      <UIWrapper 
-        currentView={currentView} 
+      <PixiWrapper selectedNode={selectedNode} />
+      <UIWrapper
+        currentView={currentView}
         onViewChange={onViewChange}
         houseCandy={houseCandy}
         yourCandy={yourCandy}
@@ -62,7 +62,16 @@ export const App = () => {
             const s = signer.get();
             if (!s) throw new Error("No signer");
 
-            const tx = await worldSend("increment", []);
+
+            const tx = await worldSend("makeBet", [deltaX, deltaY], {
+              value: ethers.utils.parseEther("0.01"),
+            });
+
+            tx.blockNumber
+
+
+            const tx = await worldSend("resolveBet");
+
 
             console.log("increment tx", tx);
             console.log("increment result", await tx.wait());

@@ -3,6 +3,9 @@ import * as PIXI from 'pixi.js'
 import TWEEN from '@tweenjs/tween.js'
 import FontFaceObserver from 'fontfaceobserver'
 import AppContainer from "./pixi/AppContainer.js"
+import WingEnd from "./pixi/assets/WingEnd.png"
+import WingBone from "./pixi/assets/WingBone.png"
+import BodyPart from "./pixi/assets/BodyPart.png"
 
 export default class PixiWrapper extends React.Component {
   constructor(props) {
@@ -65,7 +68,9 @@ export default class PixiWrapper extends React.Component {
     return new Promise(async (res, rej) => {
       const loader = PIXI.Loader.shared
       try {
-        //loader.add("TypeAgendaL", TypeAgendaM)  
+        loader.add("WingEnd", WingEnd)
+        loader.add("WingBone", WingBone)
+        loader.add("BodyPart", BodyPart)  
         loader.onComplete.add(() => { res() })
         loader.load()
       } catch (e) {

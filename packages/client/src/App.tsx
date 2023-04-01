@@ -5,6 +5,9 @@ import PixiWrapper from "./PixiWrapper.jsx";
 import UIWrapper from "./UIWrapper.jsx"
 import { INTERFACE_STATE } from "./constants.js"
 
+// Using a global context to easily pass callbacks around to Pixi... not ideal but it'll do for now.
+window.PACHINGO = {}
+
 export const App = () => {
 
   const [currentView, setCurrentView] = useState(INTERFACE_STATE.NOW)
@@ -22,6 +25,9 @@ export const App = () => {
   const yourCandy = 325
   const [betAmount, setBetAmount] = useState(5)
   const [probability, setProbability] = useState(0.125)
+  const [selectedNode, setSelectedNode] = useState({ column: -1, row: -1, probability: 0 })
+  // shiiiiii  
+  window.PACHINGO.setSelectedNode = setSelectedNode
 
   const onBet = (timeSteps : Number, predictedValue : Number, betAmount : Number) : any => {
     console.log('Sending bet: ', timeSteps, predictedValue, betAmount)
@@ -33,7 +39,7 @@ export const App = () => {
 
   return (
     <>
-      <PixiWrapper/>
+      <PixiWrapper selectedNode={selectedNode}/>
       <UIWrapper 
         currentView={currentView} 
         onViewChange={onViewChange}
@@ -41,7 +47,7 @@ export const App = () => {
         yourCandy={yourCandy}
         betAmount={betAmount}
         setBetAmount={setBetAmount}
-        probability={probability}
+        probability={selectedNode.probability}
       />
       {/* <div className="full-screen transparent">
         <div>

@@ -15,6 +15,8 @@ export default class UIWrapper extends React.Component {
   }
   render() {
     const { currentView, houseCandy, yourCandy, betAmount, setBetAmount, probability } = this.props
+
+    console.log("Probability: ", probability)
     
     const nowClassnames = classnames({ "button-component": true, active: (currentView == INTERFACE_STATE.NOW) })
 
@@ -58,7 +60,7 @@ export default class UIWrapper extends React.Component {
               <div className="content-component-column">
                 <input className="input-component content-component-row" value={betAmount} onChange={(e) => setBetAmount(parseFloat(e.target.value))}></input>
                 <div className="content-component-row highlight-value">{formatProbability(probability)}</div>
-                <div className="content-component-row highlight-value">{(1 / probability) * betAmount}</div>
+                <div className="content-component-row highlight-value">{((1 / probability) * betAmount).toFixed(2)}</div>
               </div>
             </div>
 

@@ -87,6 +87,10 @@ export default class PixiWrapper extends React.Component {
     })    
   }
 
+  componentDidUpdate(oldProps) {
+    this._pAppContainer.setSelectedNode(this.props.selectedNode)
+  }
+
   componentWillUnmount() {
     window.removeEventListener("keydown", this.onKeyDown)
     window.removeEventListener("keyup", this.onKeyUp)

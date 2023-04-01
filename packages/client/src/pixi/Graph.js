@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js'
 import GraphNode from './GraphNode'
 
-export default class AppContainer extends PIXI.Container {
+export default class Graph extends PIXI.Container {
   constructor(noColumns, rowGap, columnGap, nodeRadius = 20, color = 0xffffff) {
     super()
     
@@ -12,6 +12,8 @@ export default class AppContainer extends PIXI.Container {
     this.nodeRadius = nodeRadius
     this.color = color
 
+    this.currentlySelectedNode = null
+
     this.generateNodes()
     this.generateEdges()
   }
@@ -20,7 +22,7 @@ export default class AppContainer extends PIXI.Container {
     this.nodes = {}
     for (let column = 1; column <= this.noColumns; column++) {
       for (let row = 1; row <= column; row++) {
-        let node = new GraphNode(this.noColumns, column, row, this.columnGap, this.rowGap, this.nodeRadius, this.color)
+        let node = new GraphNode(this.noColumns, this.noRows, column, row, this.columnGap, this.rowGap, this.nodeRadius, this.color)
         const coords = this.getGraphToSpaceCoords(column, row)
         node.position.x = coords.x
         node.position.y = coords.y
@@ -47,6 +49,22 @@ export default class AppContainer extends PIXI.Container {
 
   getSpaceToGraphCoords() {
 
+  }
+
+  setSelectedNode(selectedNode) {
+    if (this.currentlySelectedNode) {
+      this.currentlySelectedNode.setSelected(false)
+      if (this.currentlySelectedNode.row == selectedNode.row && this.currentlySelectedNode.column == selectedNode.column) {
+        return
+      } else {
+        this.currentlySelectedNode = null
+      }
+    }
+
+    if (!this.nodes[selectedNode.column][selectedNode.row]) return
+
+    this.currentlySelectedNode = this.nodes[selectedNode.column][selectedNode.row]
+    this.currentlySelectedNode.setSelected(true)
   }
 
   onClick = () => {

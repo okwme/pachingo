@@ -18,6 +18,10 @@ export default class AppContainer extends PIXI.Container {
     this.graph.position.y = this.H / 2
   }
 
+  setSelectedNode(selectedNode) {
+    this.graph.setSelectedNode(selectedNode)
+  }
+
   tick() {
 
   }

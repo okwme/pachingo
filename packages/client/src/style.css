@@ -2,6 +2,9 @@
   box-sizing: border-box;
 }
 
+
+textarea, input { outline: none; border: 0; border-bottom: 1px solid #AAAEB2; }
+
 body {
   margin: 0;
   font-family: "Averia", sans-serif;
@@ -10,6 +13,12 @@ body {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+  line-height: 1.4;
+  font-size: 1.2rem;
+}
+
+.ui-wrapper {
+  pointer-events: none;
 }
 
 .full-screen {
@@ -35,10 +44,30 @@ body {
   left: 20px;
   display: flex;
   flex-direction: row;
+  pointer-events: all;
+}
+
+.house-candy-interface {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: row;
+  pointer-events: all;
+}
+
+.betting-interface {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+  pointer-events: all;
 }
 
 .button-component {
-  width: 100px;  
+  width: 130px;  
+  height: 50px;
   border-radius: 20px;
   margin: 0 8px;
   padding: 10px;
@@ -48,6 +77,14 @@ body {
   transition: background-color 0.3s ease-in-out;
   cursor: pointer;
   color: #54565B;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button-wide {
+  width: 300px;
 }
 
 .button-component:hover {
@@ -56,4 +93,51 @@ body {
 
 .button-component.active {
   background-color: #ffffff;
+}
+
+.content-component {
+  background-color: #ffffff;
+  border: 1px solid #AAAEB2;
+  padding: 25px;
+  border-radius: 30px;
+  color: #AAAEB2;
+}
+
+.content-component.wide {
+  width: 400px;
+  margin-top: 15px;
+}
+
+.place-bet-interface {
+  display: flex;
+  flex-direction: row;
+}
+
+.content-component-column {
+  flex: 1;
+}
+
+.place-bet-button {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-component {
+  font-size: 12pt;
+  text-align: center;
+  width: 150px;
+  padding: 0px 0;
+}
+
+.content-component-row {
+  margin: 2px 0;
+}
+
+.highlight-value {
+  color: black;
+  text-align: center;
+  width: 150px;
 }

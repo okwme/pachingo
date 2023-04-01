@@ -16,7 +16,12 @@ export const App = () => {
     worldSend,
   } = useMUD();
 
+  // TODO (cezar): Currently adding mock state variables here. They will eventually come from MUD
   const counter = useComponentValue(CounterTable, singletonEntity);
+  const houseCandy = 1320000
+  const yourCandy = 325
+  const [betAmount, setBetAmount] = useState(5)
+  const [probability, setProbability] = useState(0.125)
 
   const onBet = (timeSteps : Number, predictedValue : Number, betAmount : Number) : any => {
     console.log('Sending bet: ', timeSteps, predictedValue, betAmount)
@@ -29,7 +34,15 @@ export const App = () => {
   return (
     <>
       <PixiWrapper/>
-      <UIWrapper currentView={currentView} onViewChange={onViewChange}/>
+      <UIWrapper 
+        currentView={currentView} 
+        onViewChange={onViewChange}
+        houseCandy={houseCandy}
+        yourCandy={yourCandy}
+        betAmount={betAmount}
+        setBetAmount={setBetAmount}
+        probability={probability}
+      />
       {/* <div className="full-screen transparent">
         <div>
           Counters: <span>{counter?.value ?? "??"}</span>

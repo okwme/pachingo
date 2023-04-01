@@ -61,7 +61,7 @@ export default class PixiWrapper extends React.Component {
       console.error("Caught exception in loading assets", e)
     }
 
-    this.startApp()
+    await this.startApp()
   }
 
   async loadAssets() {
@@ -93,7 +93,8 @@ export default class PixiWrapper extends React.Component {
   }
 
   componentDidUpdate(oldProps) {
-    this._pAppContainer.setSelectedNode(this.props.selectedNode)
+    if (this._pAppContainer)
+      this._pAppContainer.setSelectedNode(this.props.selectedNode)
   }
 
   componentWillUnmount() {

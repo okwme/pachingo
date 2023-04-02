@@ -19,6 +19,7 @@ import LineSound from "./pixi/assets/red_line_pachinko_final.wav"
 import LandingSound from "./pixi/assets/landing_screen_music_loop_final.wav"
 import TransitionSound from "./pixi/assets/transition_landing_to_game_final.wav"
 import BetCommitSound from "./pixi/assets/transitition_commit_bed.wav"
+import CandyIcon from "./pixi/assets/candy_icon.png"
 import { sound } from '@pixi/sound';
 import { INTERFACE_STATE } from "./constants.js";
 

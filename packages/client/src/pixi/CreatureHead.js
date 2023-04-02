@@ -22,13 +22,18 @@ export default class CreatureHead extends PIXI.Container {
     this.headJaw.position.set(200, 165)
     //this.bodyPartSprite.position.set(0, 0)
     this.addChild(this.headJaw)
+
+    this.headRotation = 0
+    this.testRotation = 0
   }
 
   tick() {
     const now = (new Date()).getTime() - (-1 * 700)
-    this.rotation += (Math.sin(now / 400) / 1500)
+    this.headRotation += (Math.sin(now / 400) / 700)
+    this.rotation = this.headRotation - 0.5
 
-    this.headJaw.rotation += (Math.cos(now / 300) / 4000)
-    if (this.headJaw.rotation < -0.1) this.headJaw.rotation = -0.1
+    this.testRotation += (Math.cos(now / 300) / 1000)
+    this.headJaw.rotation = this.testRotation + 1
+    if (this.headJaw.rotation < -0.8) this.headJaw.rotation = -0.8
   }
 }

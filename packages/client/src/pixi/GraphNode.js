@@ -178,7 +178,7 @@ export default class GraphNode extends PIXI.Container {
       const delayValue = 0
 
       await pifyTween(new TWEEN.Tween(this.colorRGB)
-      .to({ r: 0, g: 1, b: 0 }, duration * 1000)
+      .to({ r: 1, g: 0, b: 0 }, duration * 1000)
       .easing(TWEEN.Easing.Cubic.InOut)
       .delay(delayValue * 1000)
       .onUpdate(() => { 

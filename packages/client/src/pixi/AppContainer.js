@@ -19,7 +19,7 @@ export default class AppContainer extends PIXI.Container {
     this.graph.position.y = this.H / 2
 
 
-    this.creatureBody = new CreatureBody([0, 1])
+    this.creatureBody = new CreatureBody([-2, -1, 0, 1, 0, 1])
     this.addChild(this.creatureBody)
     this.creatureBody.position.set(this.W * 0.5, this.H / 2)
     this.creatureBody.scale.set(0.1)

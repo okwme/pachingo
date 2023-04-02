@@ -24,16 +24,25 @@ export default class CreatureBody extends PIXI.Container {
   buildBody() {
     let xPos = 0
     let delta = 0
+    let previousDelta = null
+
     for (let i = this.values.length - 1; i >= 0; i--) {      
       let bodyPart = new CreatureNode(this.values.length - 1 - i)
       bodyPart.position.x = xPos - bodyPart.getCoreWidth() / 2
       bodyPart.position.y = delta * bodyPart.getCoreHeight() / 2
       this.container.addChild(bodyPart)
 
+      let currentDelta
       if (i > 0) {
-        delta += (this.values[i] - this.values[i - 1])
+        currentDelta = (this.values[i] - this.values[i - 1])
+        delta += currentDelta
       }
 
+      if (previousDelta) {
+        bodyPart.setJointUp(previousDelta > 0)
+      }
+
+      previousDelta = currentDelta
       xPos -= bodyPart.getBounds().width
     }
   }

@@ -6,12 +6,39 @@ import UIWrapper from "./UIWrapper.jsx"
 import { INTERFACE_STATE } from "./constants.js"
 import { Has, getComponentValueStrict } from "@latticexyz/recs";
 import { ethers } from "ethers";
+import WonOverlay from "./WonOverlay.jsx"
+import WelcomeOverlay from "./WelcomeOverlay.jsx"
+import sleep from "delay"
+
 // Using a global context to easily pass callbacks around to Pixi... not ideal but it'll do for now.
-window.PACHINGO = {}
+if (!window.PACHINGO) window.PACHINGO = {}
 let pollBalance
+
 export const App = () => {
   const [initialized, setInitialized] = useState(false)
   const [currentView, setCurrentView] = useState(INTERFACE_STATE.NOW)
+  const [isWonActive, setIsWonActive] = useState(false)
+  window.PACHINGO.onWin = () => {
+    setIsWonActive(true)
+    window.PACHINGO.sound.play("WinSound")
+  }
+  window.PACHINGO.onLose = () => {
+    //setIsWonActive(true)
+    window.PACHINGO.sound.play("LoseSound", { volume: 2 })
+  }
+  window.PACHINGO.setIsWonActive = setIsWonActive
+
+  const [isWelcomeActive, setIsWelcomeActive] = useState(true)
+  window.PACHINGO.onDismissWelcome = async () => {
+    setIsWelcomeActive(false)
+    window.PACHINGO.sound.play("BetSound")
+    await sleep(100)
+    window.PACHINGO.sound.play("MainLoop", { loop: true, volume: 0.6 })
+    await sleep(200)
+    window.PACHINGO.sound.pause("LandingSound")
+  }
+  window.PACHINGO.setIsWelcomeActive = setIsWelcomeActive
+
   const {
     components: { Bank, BetTable, OpenBet },
     // singletonEntity,
@@ -162,7 +189,7 @@ export const App = () => {
 
   return (
     <>
-      <PixiWrapper selectedNode={selectedNode} allBets={allBets} />
+      <PixiWrapper selectedNode={selectedNode} currentView={currentView} allBets={allBets} />
       <UIWrapper
         currentView={currentView}
         onViewChange={onViewChange}
@@ -174,7 +201,9 @@ export const App = () => {
         onBet={onBet}
         betDisabled={selectedNode.column < 0}
       />
-      {!initialized || !bankBalance && <div style={{ zIndex: "999", position: "fixed", top: 0, left: 0 }} onClick={initializeWorld}>initializeWorld</div>}
+      {<div style={{ zIndex: "999", position: "fixed", top: 0, left: 0 }} onClick={initializeWorld}>initializeWorld</div>}
+      <WonOverlay isWonActive={isWonActive} setIsWonActive={setIsWonActive} />
+      <WelcomeOverlay isWelcomeActive={isWelcomeActive} setIsWelcomeActive={setIsWelcomeActive} />
     </>
   );
 };

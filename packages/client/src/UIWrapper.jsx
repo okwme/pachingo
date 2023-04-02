@@ -2,6 +2,8 @@ import React from "react"
 import classnames from "classnames"
 import { INTERFACE_STATE } from "./constants"
 import { humanize, round } from '@alesmenzel/number-format';
+import CandyIcon from "./pixi/assets/candy_icon.png"
+import HouseIcon from "./pixi/assets/house_icon.png"
 const format = humanize();
 
 const formatProbability = (p) => {
@@ -24,13 +26,7 @@ export default class UIWrapper extends React.Component {
       <div className="full-screen transparent ui-wrapper">
         <div className="view-picker-interface">
           <div className={classnames({ "button-component": true, active: (currentView == INTERFACE_STATE.ALL_TIME) })} onClick={this.onViewChange(INTERFACE_STATE.ALL_TIME)}>
-            All Time
-          </div>
-          <div className={classnames({ "button-component": true, active: (currentView == INTERFACE_STATE.ONE_WEEK) })} onClick={this.onViewChange(INTERFACE_STATE.ONE_WEEK)}>
-            1 Week
-          </div>
-          <div className={classnames({ "button-component": true, active: (currentView == INTERFACE_STATE.ONE_DAY) })} onClick={this.onViewChange(INTERFACE_STATE.ONE_DAY)}>
-            1 Day
+            All Bets
           </div>
           <div className={classnames({ "button-component": true, active: (currentView == INTERFACE_STATE.NOW) })} onClick={this.onViewChange(INTERFACE_STATE.NOW)}>
             Now (Bet)
@@ -38,15 +34,26 @@ export default class UIWrapper extends React.Component {
         </div>
 
         <div className="house-candy-interface">
-          <div className="content-component">
-            {`House Candy: ${format(houseCandy)}`}
+          <div className="content-component component-house-candy">
+            <div className="house-face">
+              <img src={HouseIcon}/>
+            </div>
+            <div className="house-candy-text">{ `House Candy: ${format(houseCandy)}` }</div>
+            <div className="candy-icon">
+              <div><img src={CandyIcon} className=""/></div>
+            </div>
           </div>
         </div>
 
         <div className="betting-interface">
           <div className="content-component wide betting-summary">
-            <div>Your candy: {yourCandy}</div>
-            {betAmount > 0 && <div>(With bet reduced to {yourCandy - betAmount})</div>}
+            <div>
+              <img src={CandyIcon} className="candy-image"/>
+            </div>
+            <div>
+              <div>{yourCandy} candies</div>
+              { betAmount > 0 && <div style={{ color: "#AAAEB2" }}>({yourCandy - betAmount} with bet)</div>}
+            </div>
           </div>
 
           <div className="content-component wide place-bet">
@@ -65,7 +72,7 @@ export default class UIWrapper extends React.Component {
             </div>
 
             <div className={"place-bet-button " + betDisabled && 'disabled'}>
-              <div onClick={onBet} className="button-component button-wide">Bet</div>
+              <div onClick={onBet} className="overlay-button button-wide">Bet</div>
             </div>
           </div>
         </div>

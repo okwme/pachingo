@@ -6,6 +6,7 @@ export default class CreatureNode extends PIXI.Container {
     super()
 
     this.nodeIndex = nodeIndex
+    this.jointRadius = 150
 
     this.bodyPartSprite = new PIXI.Sprite(PIXI.Loader.shared.resources["BodyPart"].texture)
     this.bodyPartSprite.anchor.set(0.5)
@@ -17,8 +18,15 @@ export default class CreatureNode extends PIXI.Container {
     this.bottomWing = new CreatureWing()
     this.bottomWing.rotation = Math.PI
     this.bottomWing.position.set(0, this.bodyPartSprite.texture.height / 2 - 50)
-    
 
+    this.joint = new PIXI.Graphics()
+    // this.joint.beginFill(0xffffff)
+    this.joint.lineStyle(4, 0xffffff, 1)
+    this.joint.drawCircle(0, 0, this.jointRadius)
+    this.joint.position.set(this.jointRadius / 2 + this.getCoreWidth() / 2 + 90, 0)
+    this.setJointUp(true)
+    
+    this.addChild(this.joint)
     this.addChild(this.bodyPartSprite)
     this.addChild(this.topWing)
     this.addChild(this.bottomWing)
@@ -28,6 +36,22 @@ export default class CreatureNode extends PIXI.Container {
     // this.scale.set(0.2)
   }
 
+  setJointUp(isUp) {
+    this.joint.position.y = (isUp ? -1 : 1) * this.getCoreHeight() / 4
+  }
+
+  async updatePosition(newY, isJointUp) {
+    
+  }
+
+  getCoreHeight() {
+    return this.bodyPartSprite.texture.height
+  }
+
+  getCoreWidth() {
+    return this.bodyPartSprite.texture.width
+  }
+
   tick() {
     const now = (new Date()).getTime() - this.nodeIndex * 700
     const now2 = now + 400
@@ -35,7 +59,7 @@ export default class CreatureNode extends PIXI.Container {
     this.topWing.rotation -= (Math.sin(now2 / 600) / 2000)
 
     // this.rotation += (Math.cos(now / 1500) / 6400)
-    this.scale.set(0.2 * (1 + (Math.sin(now / 1400) + 1) / 32))
+    // this.scale.set(0.2 * (1 + (Math.sin(now / 1400) + 1) / 32))
 
     this.children.forEach(c => { if (c.tick) c.tick() })
   }

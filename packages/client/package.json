@@ -36,6 +36,7 @@
     "async-mutex": "^0.4.0",
     "canvas-sketch-util": "^1.10.0",
     "classnames": "^2.3.2",
+    "delay": "^5.0.0",
     "ethers": "^5.7.2",
     "fontfaceobserver": "^2.3.0",
     "lodash": "^4.17.21",

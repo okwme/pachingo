@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import Graph from './Graph';
-import CreatureNode from './CreatureNode';
+import CreatureBody from './CreatureBody';
 
 export default class AppContainer extends PIXI.Container {
   constructor(width, height) {
@@ -18,13 +18,11 @@ export default class AppContainer extends PIXI.Container {
     this.graph.position.x = this.W / 2
     this.graph.position.y = this.H / 2
 
-    this.oneNode = new CreatureNode(1)
-    this.addChild(this.oneNode)
-    this.oneNode.position.set(500, this.H / 2)
 
-    this.twoNode = new CreatureNode(0)
-    this.addChild(this.twoNode)
-    this.twoNode.position.set(685, this.H / 2 - 100)
+    this.creatureBody = new CreatureBody([0, 1])
+    this.addChild(this.creatureBody)
+    this.creatureBody.position.set(this.W * 0.5, this.H / 2)
+    this.creatureBody.scale.set(0.1)
     // this.twoNode.x = this.oneNode.getBounds().x + this.oneNode.getBounds().width
     // this.twoNode.y = this.oneNode.getBounds().y //+ this.oneNode.getBounds().height / 2
   }
@@ -34,7 +32,8 @@ export default class AppContainer extends PIXI.Container {
   }
 
   tick() {
-    this.oneNode.tick()
-    this.twoNode.tick()
+    const now = (new Date()).getTime()
+    this.creatureBody.tick()
+    // this.creatureBody.scale.set((Math.sin(now / 1000) + 1) * 0.2 + 0.1)
   }
 }

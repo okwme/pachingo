@@ -21,7 +21,12 @@ export default class PixiWrapper extends React.Component {
     appHeight: window.innerHeight
   }
 
-  onKeyDown = (e) => { }
+  onKeyDown = (e) => { 
+    console.log(e.key)
+    if (e.key == "w") {
+      this._pAppContainer.setStateWon(4, 1, 0, 1, 100, [false, true, true, false, true])
+    }
+  }
   onKeyUp = (e) => { }
   onResize = (e) => {
     this.setState({ appWidth: window.innerWidth, appHeight: window.innerHeight })
@@ -101,6 +106,26 @@ export default class PixiWrapper extends React.Component {
   componentDidUpdate(oldProps) {
     if (this._pAppContainer)
       this._pAppContainer.setSelectedNode(this.props.selectedNode)
+
+    if (oldProps.betState != this.props.betState) {
+      let { deltaX, deltaY, odds, resolved, wager, wentUp } = this.props.betState
+      deltaX = Number(deltaX)
+      deltaY = Number(deltaY)
+      odds = Number(odds)
+      resolved = Number(resolved)
+      wager = Nunber(resolved)
+
+      if (resolved == 0) {
+        // Unresolved
+        this._pAppContainer.setStatePending(deltaX, deltaY, odds, resolved, wager, wentUp)
+      } else if (resolved == 1) {
+        this._pAppContainer.setStateWon(deltaX, deltaY, odds, resolved, wager, wentUp)
+        // Won
+      } else if (resolved == 2) {
+        this._pAppContainer.setStateLost(deltaX, deltaY, odds, resolved, wager, wentUp)
+        // Lost
+      }
+    }
   }
 
   componentWillUnmount() {

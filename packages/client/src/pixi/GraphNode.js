@@ -1,6 +1,8 @@
 import * as PIXI from 'pixi.js'
 import { getProbabilityForCoordinates } from '../constants'
 import { noise2D, noise3D } from 'canvas-sketch-util/random'
+import * as TWEEN from '@tweenjs/tween.js'
+import { pifyTween } from './pixiUtils'
 
 export default class GraphNode extends PIXI.Container {
   constructor(noColumns, noRows, column, row, columnGap, rowGap, radius, color = 0xffffff) {
@@ -10,29 +12,31 @@ export default class GraphNode extends PIXI.Container {
     this.column = column
     this.row = row
     this.radius = radius
+    this.columnGap = columnGap
+    this.rowGap = rowGap
     this.interactive = true
+    this.edgeLineWidth = 0.5
+    this.color = color
 
     this.nodeGraphics = new PIXI.Graphics();
 
       // No edges for last column
-    if (column != noColumns) {
-      const lineWidth = 0.5
-
+    // if (column != noColumns) {
       this.topEdgeGraphics = new PIXI.Graphics()
-      this.topEdgeGraphics.lineStyle(lineWidth, color, 1)
+      this.topEdgeGraphics.lineStyle(this.edgeLineWidth, this.color, 1)
       this.topEdgeGraphics.moveTo(0, 0)
-      this.topEdgeGraphics.lineTo(columnGap, -rowGap / 2)
+      this.topEdgeGraphics.lineTo(this.columnGap, -this.rowGap / 2)
       //this.topEdgeGraphics.drawDashLine(columnGap, -rowGap / 2, 8, 8)
       // this.topEdgeGraphics.cacheAsBitmap = true
       this.addChild(this.topEdgeGraphics)
   
       this.bottomEdgeGraphics = new PIXI.Graphics()
-      this.bottomEdgeGraphics.lineStyle(lineWidth, color, 1)
+      this.bottomEdgeGraphics.lineStyle(this.edgeLineWidth, this.color, 1)
       this.bottomEdgeGraphics.moveTo(0, 0)
-      this.bottomEdgeGraphics.lineTo(columnGap, +rowGap / 2)
+      this.bottomEdgeGraphics.lineTo(this.columnGap, +this.rowGap / 2)
       // this.bottomEdgeGraphics.cacheAsBitmap = true
       this.addChild(this.bottomEdgeGraphics)  
-    }
+    // }
   
     /*
 
@@ -77,6 +81,26 @@ export default class GraphNode extends PIXI.Container {
     this.addChild(this.selectedGraphics);
   }
 
+  drawNodeGraphics() {
+    this.nodeGraphics.clear()
+    this.nodeGraphics.beginFill(this.color)
+    this.nodeGraphics.drawCircle(0, 0, this.radius)
+  }
+
+  drawTopEdge() {
+    this.topEdgeGraphics.clear()
+    this.topEdgeGraphics.lineStyle(this.edgeLineWidth, this.color, 1)
+    this.topEdgeGraphics.moveTo(0, 0)
+    this.topEdgeGraphics.lineTo(this.columnGap, -this.rowGap / 2)
+  }
+
+  drawBottomEdge() {
+    this.bottomEdgeGraphics.clear()
+    this.bottomEdgeGraphics.lineStyle(this.edgeLineWidth, this.color, 1)
+    this.bottomEdgeGraphics.moveTo(0, 0)
+    this.bottomEdgeGraphics.lineTo(this.columnGap, +this.rowGap / 2)
+  }
+
   drawSelectedGraphics() {
     this.selectedGraphics.clear()
     this.selectedGraphics.beginFill(0xff0000)
@@ -109,6 +133,54 @@ export default class GraphNode extends PIXI.Container {
   setSelected(isSelected) {
     if (isSelected) this.selectedGraphics.alpha = 1
     else this.selectedGraphics.alpha = 0
+  }
+
+  async setIsWinningState(isWinningState, wentUp, shouldColorEdge) {
+    if (isWinningState) {
+      this.oldColor = this.color
+
+      const pixiRGB = PIXI.utils.hex2rgb(this.color)
+      this.colorRGB = { r: pixiRGB[0], g: pixiRGB[1], b: pixiRGB[2] }
+      // this.color = 0x00ff00
+      this.drawNodeGraphics()
+
+      if (shouldColorEdge) {
+        if (wentUp) { this.drawTopEdge() } 
+        else { this.drawBottomEdge() }
+      }
+
+      const duration = 1
+      const delay = 0
+
+      await pifyTween(new TWEEN.Tween(this.colorRGB)
+      .to({ r: 0, g: 1, b: 0 }, duration * 1000)
+      .easing(TWEEN.Easing.Cubic.InOut)
+      .delay(delay * 1000)
+      .onUpdate(() => { 
+        console.log(this.colorRGB)
+        this.color = PIXI.utils.rgb2hex([this.colorRGB.r, this.colorRGB.g, this.colorRGB.b])
+        this.drawNodeGraphics()
+        if (shouldColorEdge) {
+          if (wentUp) { this.drawTopEdge() } 
+          else { this.drawBottomEdge() }
+        }  
+      })
+      .start())
+
+    } else {
+      this.color = this.oldColor
+      this.drawNodeGraphics()
+      this.drawTopEdge()
+      this.drawBottomEdge()
+    }
+  }
+
+  async hide(duration, delay = 0) {
+    await pifyTween(new TWEEN.Tween(this)
+    .to({ alpha: 0 }, duration * 1000)
+    .easing(TWEEN.Easing.Cubic.InOut)
+    .delay(delay * 1000)
+    .start())
   }
 
   onClick(e) {

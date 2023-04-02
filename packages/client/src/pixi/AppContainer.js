@@ -26,10 +26,28 @@ export default class AppContainer extends PIXI.Container {
     this.addChild(this.creature)
     this.creature.position.set(this.W * 0.55 , this.H / 2)
     this.creature.scale.set(0.1)
+
+    this.graph.creature = this.creature
   }
 
   setSelectedNode(selectedNode) {
     this.graph.setSelectedNode(selectedNode)
+  }
+
+  setStatePending(deltaX, deltaY, odds, resolved, wager, wentUp) {
+
+  }
+
+  setStateWon(deltaX, deltaY, odds, resolved, wager, wentUp) {
+    this.advanceState(deltaX, deltaY, wentUp)
+  }
+
+  setStateLost(deltaX, deltaY, odds, resolved, wager, wentUp) {
+
+  }
+
+  advanceState(deltaX, deltaY, wentUp, hasWon) {
+    this.graph.setWinningPath(deltaX, deltaY, wentUp)
   }
 
   tick() {

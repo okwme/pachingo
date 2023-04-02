@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js'
 import CreatureBody from './CreatureBody';
 import CreatureHead from './CreatureHead'
+import delay from "delay"
 
 export default class Creature extends PIXI.Container {
   constructor(initialValues) {
@@ -26,10 +27,15 @@ export default class Creature extends PIXI.Container {
   }
 
   onClick() {
-    this.addNode(this.creatureBody.values[this.creatureBody.values.length - 1] + ((Math.random() > 0.5) ? 1 : -1))
+    this.addNodeValue(this.creatureBody.values[this.creatureBody.values.length - 1] + ((Math.random() > 0.5) ? 1 : -1))
   }
 
-  async addNode(value) {
+  async addNode(wentUp, delayVal) {
+    await delay(delayVal)
+    await this.addNodeValue(this.creatureBody.values[this.creatureBody.values.length - 1] + ((wentUp) ? -1 : 1))
+  }
+
+  async addNodeValue(value) {
     await this.creatureBody.addNode(value)
   }
 

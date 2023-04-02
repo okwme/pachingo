@@ -1,6 +1,8 @@
 import * as PIXI from 'pixi.js'
 import CreatureNode from './CreatureNode'
 import delay from "delay"
+import * as TWEEN from '@tweenjs/tween.js'
+import { pifyTween } from './pixiUtils'
 
 export default class CreatureBody extends PIXI.Container {
   constructor(values) {
@@ -58,9 +60,22 @@ export default class CreatureBody extends PIXI.Container {
     let previousDelta = this.values[n - 1] - this.values[n - 2]
     let delta = previousDelta
 
+    let delay = 0
+    let stagger = 0.075
+    let promises = []
+
     for (let i = 0; i < this.container.children.length; i++) {
       let bodyPart = this.container.children[i]
-      bodyPart.position.y = delta * bodyPart.getCoreHeight() / 2
+
+      let duration = 0.25
+      let tweenPromise = pifyTween(new TWEEN.Tween(bodyPart.position)
+      .to({ y: delta * bodyPart.getCoreHeight() / 2 }, duration * 1000)
+      .easing(TWEEN.Easing.Cubic.InOut)
+      .delay(delay * 1000)
+      .start())
+      promises.push(tweenPromise)
+
+      //bodyPart.position.y = delta * bodyPart.getCoreHeight() / 2
 
       let currentDelta
       if (valuesIndex > 0) {
@@ -72,8 +87,11 @@ export default class CreatureBody extends PIXI.Container {
       if (previousDelta) bodyPart.setJointUp(previousDelta > 0)
 
       previousDelta = currentDelta
-      await delay(25)
+      // await delay(25)
+      delay += stagger
     }
+
+    await Promise.all(promises)
 
     console.log(this.values)
   }

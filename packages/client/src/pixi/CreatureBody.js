@@ -23,10 +23,11 @@ export default class CreatureBody extends PIXI.Container {
 
   buildBody() {
     let xPos = 0
-    let delta = 0
-    let previousDelta = null
+    let n = this.values.length
+    let previousDelta = this.values[n - 1] - this.values[n - 2]
+    let delta = previousDelta
 
-    for (let i = this.values.length - 1; i >= 0; i--) {      
+    for (let i = this.values.length - 2; i >= 0; i--) {      
       let bodyPart = new CreatureNode(this.values.length - 1 - i)
       bodyPart.position.x = xPos - bodyPart.getCoreWidth() / 2
       bodyPart.position.y = delta * bodyPart.getCoreHeight() / 2
@@ -49,15 +50,17 @@ export default class CreatureBody extends PIXI.Container {
 
   async addNode(value) {
     this.values.push(value)
+
     let newLastNode = new CreatureNode(this.values.length)
-    newLastNode.position.x = -((this.values.length - 1) * newLastNode.getBounds().width) - newLastNode.getCoreWidth() / 2
+    newLastNode.position.x = -((this.values.length - 2) * newLastNode.getBounds().width) - newLastNode.getCoreWidth() / 2
     newLastNode.position.y = this.container.children[this.container.children.length - 1].y
 
     this.container.addChild(newLastNode)
     
-    let delta = 0
-    let valuesIndex = this.values.length - 1
-    let previousDelta = null
+    let n = this.values.length
+    let valuesIndex = n - 2
+    let previousDelta = this.values[n - 1] - this.values[n - 2]
+    let delta = previousDelta
 
     for (let i = 0; i < this.container.children.length; i++) {
       let bodyPart = this.container.children[i]

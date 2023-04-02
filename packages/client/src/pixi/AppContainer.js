@@ -25,7 +25,7 @@ export default class AppContainer extends PIXI.Container {
     this.creature = new Creature()
     this.addChild(this.creature)
     this.creature.position.set(this.W * 0.55 , this.H / 2)
-    this.creature.scale.set(0.04)
+    this.creature.scale.set(0.1)
   }
 
   setSelectedNode(selectedNode) {

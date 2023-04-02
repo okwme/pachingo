@@ -21,4 +21,9 @@ export default class CreatureWing extends PIXI.Container {
     // this.position.set(500, 500)
     // this.scale.set(0.2)
   }
+
+  tick() {
+    const now = (new Date()).getTime()
+    this.wingEndSprite.rotation += (Math.sin(now / 400) / 500)
+  }
 }

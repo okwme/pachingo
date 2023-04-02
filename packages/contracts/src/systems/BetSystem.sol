@@ -4,13 +4,41 @@ import { console } from "forge-std/console.sol";
 import { System } from "@latticexyz/world/src/System.sol";
 import { BetTable, BetTableData } from "../tables/BetTable.sol";
 import { OpenBet } from "../tables/OpenBet.sol";
-import { Bank } from "../tables/Bank.sol";
+import { Bank, BankData } from "../tables/Bank.sol";
 import { BetStatus } from "../Types.sol";
 
 contract BetSystem is System {
-
   uint constant oddsDivisor = 100_000;
   uint256 constant MAX_BLOCKS_TIL_BET_IS_INVALID = 256; // 64 minutes
+
+  // function testBank() public {
+  //   BankData memory bankData = Bank.get();
+  //   Bank.set(bankData.balance + 10_000_000_000_000_000_000, bankData.held + 1_000_000_000_000_000_000);
+  // }
+
+  // function testStartBet() public {
+  //   OpenBet.set(block.number);
+  //   BetTable.set(
+  //     uint256(block.number),
+  //     1,
+  //     2,
+  //     BetStatus.UNRESOLVED,
+  //     1_000_000_000_000_000,
+  //     12500,
+  //     [false, false, false, false, false]
+  //   );
+  // }
+
+  // function testEndBet() public {
+  //   uint256 lastOpenBet = OpenBet.get();
+  //   BetTableData memory bet = BetTable.get(lastOpenBet);
+  //   bet.resolved = BetStatus.WON;
+  //   bet.wentUp = [true, false, true, false, true];
+  //   BetTable.set(lastOpenBet, bet);
+  //   OpenBet.set(0);
+  // }
+
+  function sendMoney() public payable {}
 
   // makeBet accepts a bet in the form of deltaX (how many steps into the future is the bet)
   // and deltaY (how many steps up or down is the bet)
@@ -18,7 +46,6 @@ contract BetSystem is System {
   // before the current bet can proceed, the previous one has to be cleared so that
   // losing bet's funds aren't held too long.
   function makeBet(uint256 deltaX, int256 deltaY) public payable returns (bool) {
-
     uint256 openBet = OpenBet.get();
     if (openBet > 0) {
       require(resolveBet(), "Failed to resolve bet");
@@ -34,13 +61,12 @@ contract BetSystem is System {
     require(availableFunds >= payout, "Not enough money in the bank to pay out this bet");
 
     availableFunds -= payout;
-    Bank.set(availableFunds);
+    Bank.set(address(this).balance, availableFunds);
 
     bool[5] memory wentUp = [false, false, false, false, false];
     BetTable.set(uint256(block.number), deltaX, deltaY, BetStatus.UNRESOLVED, msg.value, odds, wentUp);
     OpenBet.set(block.number);
   }
-
 
   function resolveBet() public returns (bool) {
     uint256 openBet = OpenBet.get();
@@ -87,11 +113,15 @@ contract BetSystem is System {
     } else {
       uint256 availableFunds = getBank();
       availableFunds += payout;
-      Bank.set(availableFunds);
+      Bank.set(address(this).balance, availableFunds);
     }
   }
 
-  function calculateResults(uint256 openBet, uint256 deltaX, int256 deltaY) public view returns (bool[5] memory wentUp, int256 accumulativeDeltaY) {
+  function calculateResults(
+    uint256 openBet,
+    uint256 deltaX,
+    int256 deltaY
+  ) public view returns (bool[5] memory wentUp, int256 accumulativeDeltaY) {
     require(openBet < block.number, "openBet must be less than current block.number");
     accumulativeDeltaY = 0;
     for (uint256 i = 0; i < deltaX; i++) {
@@ -140,7 +170,10 @@ contract BetSystem is System {
   }
 
   function getBank() public view returns (uint256) {
-    uint256 moneyCurrentlyInEscrowForOpenBets = Bank.get();
+    BankData memory bankData;
+    uint256 moneyCurrentlyInEscrowForOpenBets;
+    bankData = Bank.get();
+    moneyCurrentlyInEscrowForOpenBets = bankData.held;
     uint256 availableBank = address(this).balance - moneyCurrentlyInEscrowForOpenBets;
   }
 
@@ -149,27 +182,29 @@ contract BetSystem is System {
     uint256 payout = getPayout(wager, odds);
     return (payout <= getBank());
   }
-  
+
   function getPayout(uint256 wager, uint256 odds) public pure returns (uint256) {
-   return wager * (oddsDivisor - odds) / oddsDivisor;
+    return (wager * (oddsDivisor - odds)) / oddsDivisor;
   }
 
   function getOdds(uint256 deltaX, int256 deltaY) public pure returns (uint256) {
     if (deltaX == 1) {
-        require(abs(deltaY) > 1, "Invalid deltaY");
-        return 5000; // 0.05000
+      require(abs(deltaY) > 1, "Invalid deltaY");
+      return 5000; // 0.05000
     } else if (deltaX == 2) {
       require(abs(deltaY) > 2, "Invalid deltaY");
       if (abs(deltaY) == 2) {
         return 25000; // 0.25000
-      } else { // deltaY == 0
+      } else {
+        // deltaY == 0
         return 50000; // 0.50000
       }
     } else if (deltaX == 3) {
       require(abs(deltaY) > 3, "Invalid deltaY");
       if (abs(deltaY) == 3) {
         return 25000; // 0.25000
-      } else { // abs(deltaY) == 1
+      } else {
+        // abs(deltaY) == 1
         return 12500; // 0.12500
       }
     } else if (deltaX == 4) {
@@ -178,7 +213,8 @@ contract BetSystem is System {
         return 6250; // 0.06250
       } else if (abs(deltaY) == 2) {
         return 25000; // 0.25000
-      } else { // deltaY == 0
+      } else {
+        // deltaY == 0
         return 37500; // 0.37500
       }
     } else if (deltaX == 5) {
@@ -187,11 +223,13 @@ contract BetSystem is System {
         return 3125; // 0.03125
       } else if (abs(deltaY) == 3) {
         return 12625; // 0.12625
-      } else{ // (abs(deltaY) == 1) {
+      } else {
+        // (abs(deltaY) == 1) {
         return 3125; // 0.03125
       }
     }
   }
+
   function abs(int x) private pure returns (int) {
     return x >= 0 ? x : -x;
   }

@@ -19,12 +19,13 @@ export default mudConfig({
     },
     Bank: {
       schema: {
+        balance: "uint256",
         held: "uint256",
       },
       primaryKeys: {}
     },
     BetTable: {
-      primaryKeys: {  
+      primaryKeys: {
         block: "uint256",
       },
       schema: {

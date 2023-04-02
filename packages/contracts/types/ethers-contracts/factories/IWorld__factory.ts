@@ -8,6 +8,173 @@ import type { IWorld, IWorldInterface } from "../IWorld";
 
 const _abi = [
   {
+    inputs: [
+      {
+        internalType: "string",
+        name: "resource",
+        type: "string",
+      },
+      {
+        internalType: "address",
+        name: "caller",
+        type: "address",
+      },
+    ],
+    name: "AccessDenied",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes4",
+        name: "functionSelector",
+        type: "bytes4",
+      },
+    ],
+    name: "FunctionSelectorExists",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes4",
+        name: "functionSelector",
+        type: "bytes4",
+      },
+    ],
+    name: "FunctionSelectorNotFound",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "resource",
+        type: "string",
+      },
+    ],
+    name: "InvalidSelector",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "module",
+        type: "string",
+      },
+    ],
+    name: "ModuleAlreadyInstalled",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "resource",
+        type: "string",
+      },
+    ],
+    name: "ResourceExists",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "resource",
+        type: "string",
+      },
+    ],
+    name: "ResourceNotFound",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "expected",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "received",
+        type: "uint256",
+      },
+    ],
+    name: "StoreCore_InvalidDataLength",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "expected",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "received",
+        type: "uint256",
+      },
+    ],
+    name: "StoreCore_InvalidFieldNamesLength",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "StoreCore_NotDynamicField",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "StoreCore_NotImplemented",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "tableId",
+        type: "uint256",
+      },
+      {
+        internalType: "string",
+        name: "tableIdString",
+        type: "string",
+      },
+    ],
+    name: "StoreCore_TableAlreadyExists",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "tableId",
+        type: "uint256",
+      },
+      {
+        internalType: "string",
+        name: "tableIdString",
+        type: "string",
+      },
+    ],
+    name: "StoreCore_TableNotFound",
+    type: "error",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "system",
+        type: "address",
+      },
+    ],
+    name: "SystemExists",
+    type: "error",
+  },
+  {
     anonymous: false,
     inputs: [
       {
@@ -108,7 +275,7 @@ const _abi = [
         type: "bool",
       },
     ],
-    stateMutability: "nonpayable",
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -132,9 +299,9 @@ const _abi = [
     name: "calculateResults",
     outputs: [
       {
-        internalType: "bool[]",
+        internalType: "bool[5]",
         name: "wentUp",
-        type: "bool[]",
+        type: "bool[5]",
       },
       {
         internalType: "int256",
@@ -142,7 +309,7 @@ const _abi = [
         type: "int256",
       },
     ],
-    stateMutability: "nonpayable",
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -171,7 +338,7 @@ const _abi = [
         type: "bytes",
       },
     ],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -225,7 +392,7 @@ const _abi = [
         type: "uint256",
       },
     ],
-    stateMutability: "nonpayable",
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -297,7 +464,7 @@ const _abi = [
         type: "uint256",
       },
     ],
-    stateMutability: "nonpayable",
+    stateMutability: "pure",
     type: "function",
   },
   {
@@ -321,7 +488,7 @@ const _abi = [
         type: "uint256",
       },
     ],
-    stateMutability: "nonpayable",
+    stateMutability: "pure",
     type: "function",
   },
   {
@@ -501,7 +668,7 @@ const _abi = [
         type: "bool",
       },
     ],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -640,6 +807,13 @@ const _abi = [
     name: "retractAccess",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "sendMoney",
+    outputs: [],
+    stateMutability: "payable",
     type: "function",
   },
   {

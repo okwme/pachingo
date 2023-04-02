@@ -14,10 +14,10 @@ export default class UIWrapper extends React.Component {
     this.props.onViewChange(view)
   }
   render() {
-    const { currentView, houseCandy, yourCandy, betAmount, setBetAmount, probability } = this.props
+    const { currentView, houseCandy, yourCandy, betAmount, setBetAmount, probability, onBet } = this.props
 
     console.log("Probability: ", probability)
-    
+
     const nowClassnames = classnames({ "button-component": true, active: (currentView == INTERFACE_STATE.NOW) })
 
     return (
@@ -39,14 +39,14 @@ export default class UIWrapper extends React.Component {
 
         <div className="house-candy-interface">
           <div className="content-component">
-            { `House Candy: ${format(houseCandy)}` }
+            {`House Candy: ${format(houseCandy)}`}
           </div>
         </div>
 
         <div className="betting-interface">
           <div className="content-component wide betting-summary">
             <div>Your candy: {yourCandy}</div>
-            { betAmount > 0 && <div>(With bet reduced to {yourCandy - betAmount})</div>}
+            {betAmount > 0 && <div>(With bet reduced to {yourCandy - betAmount})</div>}
           </div>
 
           <div className="content-component wide place-bet">
@@ -65,7 +65,7 @@ export default class UIWrapper extends React.Component {
             </div>
 
             <div className="place-bet-button">
-              <div className="button-component button-wide">Bet</div>
+              <div onClick={onBet} className="button-component button-wide">Bet</div>
             </div>
           </div>
         </div>

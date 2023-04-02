@@ -26,6 +26,7 @@ window.PACHINGO.sound = sound
 export default class PixiWrapper extends React.Component {
   constructor(props) {
     super(props)
+    this.currentBet = null //{ resolution: -1 }
     this._canvas = null
   }
 
@@ -134,9 +135,10 @@ export default class PixiWrapper extends React.Component {
   }
 
   async componentDidUpdate(oldProps) {
-    if (this._pAppContainer)
+    if (this._pAppContainer && (this.props.selectedNode != oldProps.selectedNode || this.currentBet == null))
       this._pAppContainer.setSelectedNode(this.props.selectedNode)
 
+    /*
     if (oldProps.betState != this.props.betState) {
       let { deltaX, deltaY, odds, resolved, wager, wentUp } = this.props.betState
       deltaX = Number(deltaX)
@@ -156,6 +158,39 @@ export default class PixiWrapper extends React.Component {
       } else if (resolved == 2) {
         this._pAppContainer.setStateLost(deltaX, deltaY, odds, resolved, wager, wentUp)
         // Lost
+      }
+    }*/
+    if (oldProps.allBets != this.props.allBets) {
+      console.log("Bets: ", this.props.allBets)
+      if (this.props.allBets.length > 0 && this.props.allBets.length == oldProps.allBets.length) {
+
+        let lastBet = this.props.allBets[this.props.allBets.length - 1]
+        let { deltaX, deltaY, odds, resolved, wager, wentUp } = lastBet
+        deltaX = Number(deltaX)
+        deltaY = Number(deltaY)
+        odds = Number(odds)
+        resolved = Number(resolved)
+        wager = Number(resolved)
+  
+        if (this.currentBet && lastBet.resolution != this.currentBet.resolution) {
+          if (lastBet.resolution == 1) {
+            //await this._pAppContainer.setStateWon(deltaX, 1, 0, 1, 100, [false, true, true, false, true])
+      
+            await this._pAppContainer.setStateWon(deltaX, deltaY, odds, resolved, wager, wentUp)
+            // window.PACHINGO.setIsWonActive(true)
+            window.PACHINGO.onWin()   
+            this.currentBet = null 
+          } else if (lastBet.resolution == 2) {
+            await this._pAppContainer.setStateLost(deltaX, deltaY, odds, resolved, wager, wentUp)
+            window.PACHINGO.onLose()
+            this.currentBet = null
+          } else {
+  
+          }  
+        }
+      } else if (this.props.allBets.length > oldProps.allBets.length) {
+        let lastBet = this.props.allBets[this.props.allBets.length - 1]
+        this.currentBet = lastBet
       }
     }
 

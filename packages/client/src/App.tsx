@@ -210,9 +210,33 @@ export const App = () => {
 };
 
 const getGraphToDeltaXYCoords = (column, row) => {
+
+  if (column == 1 && row == 1) return { x: 0, y: 0 }
+
+  if (column == 2 && row == 1) return { x: 1, y: 1 }
+  if (column == 2 && row == 2) return { x: 1, y: -1 }
+
+  if (column == 3 && row == 1) return { x: 2, y: 2 }
+  if (column == 3 && row == 2) return { x: 2, y: 0 }
+  if (column == 3 && row == 3) return { x: 2, y: -2 }
+
+  if (column == 4 && row == 1) return { x: 3, y: 3 }
+  if (column == 4 && row == 2) return { x: 3, y: 1 }
+  if (column == 4 && row == 3) return { x: 3, y: -1 }
+  if (column == 4 && row == 4) return { x: 3, y: -3 }
+
+  if (column == 5 && row == 1) return { x: 4, y: 4 }
+  if (column == 5 && row == 2) return { x: 4, y: 2 }
+  if (column == 5 && row == 3) return { x: 4, y: 0 }
+  if (column == 5 && row == 4) return { x: 4, y: -2 }
+  if (column == 5 && row == 5) return { x: 4, y: -4 }
+
   // column and row are 1-indexed
   let x = column - 1
   let offset = row - column / 2
   let y = -(Math.ceil(Math.abs(offset - 1 / 2)) * Math.sign(offset - 1 / 2))
+
+  // if (column % 2 == 0) y = y * 2
+  // else y = Math.sign(y) * Math.abs(y) * 2 - 1
   return { x, y }
 }

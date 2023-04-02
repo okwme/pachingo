@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { useMUD } from "./MUDContext";
 import PixiWrapper from "./PixiWrapper.jsx";
@@ -12,11 +12,10 @@ import sleep from "delay"
 
 // Using a global context to easily pass callbacks around to Pixi... not ideal but it'll do for now.
 if (!window.PACHINGO) window.PACHINGO = {}
+let pollBalance
 
 export const App = () => {
   const [initialized, setInitialized] = useState(false)
-  let bets = []
-
   const [currentView, setCurrentView] = useState(INTERFACE_STATE.NOW)
   const [isWonActive, setIsWonActive] = useState(false)
   window.PACHINGO.onWin = () => {
@@ -49,6 +48,18 @@ export const App = () => {
     worldContract
   } = useMUD();
 
+  const [userBalance, setUserBalance] = useState("0")
+
+  useEffect(() => {
+    pollBalance = setInterval(async () => {
+      const userBalanceBN = await signer.get()?.getBalance()
+      setUserBalance(ethers.utils.formatEther(userBalanceBN))
+    }, 1000)
+    return () => {
+      clearInterval(pollBalance)
+    }
+  })
+
   // // TODO (cezar): Currently adding mock state variables here. They will eventually come from MUD
   // Bank.update$.subscribe((_bank) => {
   //   setBankBalance(_bank.value[0]?.balance || 0)
@@ -78,36 +89,25 @@ export const App = () => {
 
   const openBet = useEntityQuery([Has(OpenBet)])[0]
   const maybeOpenBet = useComponentValue(OpenBet, openBet)
-  console.log({ maybeOpenBet })
 
   const bank = useEntityQuery([Has(Bank)])[0];
   const maybeBank = useComponentValue(Bank, bank)
   const houseCandy = (maybeBank ? maybeBank.balance - maybeBank.escrow : 0).toString()
+
   const bankBalance = maybeBank ? ethers.utils.formatEther(maybeBank.balance) : "0"
-  console.log({ bankBalance })
-  // console.log(bankBalance || 'no bank balance!!!')
-  // bankBalance && setInitialized(true)
   const bankEscrow = maybeBank ? ethers.utils.formatEther(maybeBank.escrow) : "0"
 
-  // bank.map((entity) => console.log("b",))
-
   const betTable = useEntityQuery([Has(BetTable)]);
+  // keep this (vvvv) commented out but for reference of how to do it another way
   // betTable.map((entity) => useComponentValue(BetTable, entity))
   const allBets = betTable.map((entity) => getComponentValueStrict(BetTable, entity))
 
-  // console.log(`betTable.entries()`, betTable.entries())
 
-  //const counter = useComponentValue(CounterTable, singletonEntity);
 
-  // const houseCandy = 1320000
-
-  // use ethers to convert bankBalance and bankEscrow to ether as houseCandy
-  // var houseCandy = ethers.utils.formatEther(bankBalance - bankEscrow)
-  // console.log({ houseCandy })
 
   const yourCandy = 325
-  const [betAmount, setBetAmount] = useState(5)
-  const [probability, setProbability] = useState(0.125)
+  const [betAmount, setBetAmount] = useState(1)
+  const [probability, setProbability] = useState(0)
   const [selectedNode, setSelectedNode] = useState({ column: -1, row: -1, probability: 0 })
   let nextBlockIterator
   // shiiiiii  
@@ -188,22 +188,23 @@ export const App = () => {
   }
 
   return (
-    <>      
+    <>
       <PixiWrapper selectedNode={selectedNode} currentView={currentView} allBets={allBets} />
       <UIWrapper
+        bankAmount={bankBalance}
         currentView={currentView}
         onViewChange={onViewChange}
         houseCandy={houseCandy}
-        yourCandy={yourCandy}
+        userBalance={userBalance}
         betAmount={betAmount}
         setBetAmount={setBetAmount}
         probability={selectedNode.probability}
         onBet={onBet}
         betDisabled={selectedNode.column < 0}
       />
-      { <div style={{ zIndex: "999", position: "fixed", top: 0, left: 0 }} onClick={initializeWorld}>initializeWorld</div>}
-      <WonOverlay isWonActive={isWonActive} setIsWonActive={setIsWonActive}/>
-      <WelcomeOverlay isWelcomeActive={isWelcomeActive} setIsWelcomeActive={setIsWelcomeActive}/>
+      {(!initialized && bankBalance == "0") && <div style={{ zIndex: "999", position: "fixed", top: 0, left: 0 }} onClick={initializeWorld}>initializeWorld</div>}
+      <WonOverlay isWonActive={isWonActive} setIsWonActive={setIsWonActive} />
+      <WelcomeOverlay isWelcomeActive={isWelcomeActive} setIsWelcomeActive={setIsWelcomeActive} />
     </>
   );
 };

@@ -201,7 +201,7 @@ export const App = () => {
         onBet={onBet}
         betDisabled={selectedNode.column < 0}
       />
-      {!initialized || !bankBalance && <div style={{ zIndex: "999", position: "fixed", top: 0, left: 0 }} onClick={initializeWorld}>initializeWorld</div>}
+      { <div style={{ zIndex: "999", position: "fixed", top: 0, left: 0 }} onClick={initializeWorld}>initializeWorld</div>}
       <WonOverlay isWonActive={isWonActive} setIsWonActive={setIsWonActive}/>
       <WelcomeOverlay isWelcomeActive={isWelcomeActive} setIsWelcomeActive={setIsWelcomeActive}/>
     </>

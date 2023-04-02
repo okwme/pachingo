@@ -115,6 +115,11 @@ export default class Graph extends PIXI.Container {
 
     await Promise.all(promises)
 
+    if (wentUp)
+      window.PACHINGO.moveDown(0)
+    else
+      window.PACHINGO.moveUp(0)
+
     let index = 0
     for (let column = 1; column <= this.noColumns; column++) {
       for (let row = 1; row <= column; row++) {

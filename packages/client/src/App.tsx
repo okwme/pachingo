@@ -90,7 +90,7 @@ export const App = () => {
 
   return (
     <>
-      <PixiWrapper selectedNode={selectedNode} />
+      <PixiWrapper selectedNode={selectedNode} currentView={currentView} />
       <UIWrapper
         currentView={currentView}
         onViewChange={onViewChange}

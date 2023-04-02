@@ -26,7 +26,7 @@ export default class CreatureHead extends PIXI.Container {
 
   tick() {
     const now = (new Date()).getTime() - (-1 * 700)
-    this.rotation += (Math.sin(now / 600) / 4000)
+    this.rotation += (Math.sin(now / 400) / 1500)
 
     this.headJaw.rotation += (Math.cos(now / 300) / 4000)
     if (this.headJaw.rotation < -0.1) this.headJaw.rotation = -0.1

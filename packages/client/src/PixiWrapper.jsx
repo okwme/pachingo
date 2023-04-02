@@ -9,6 +9,7 @@ import BodyPart from "./pixi/assets/BodyPart.png"
 import HeadTop from "./pixi/assets/HeadTop.png"
 import HeadJaw from "./pixi/assets/HeadJaw.png"
 import HeadTentacles from "./pixi/assets/HeadTentacles.png"
+import BackgroundImage from "./pixi/assets/background.jpeg"
 import MainLoopSound from "./pixi/assets/bakground_ambience_for_gameplay_final.mp3"
 import WinSound from "./pixi/assets/win_pop_up_sound_final.wav"
 import LoseSound from "./pixi/assets/lose_sound.wav"
@@ -17,6 +18,7 @@ import BallSound from "./pixi/assets/red_ball_pachinko_final.wav"
 import LineSound from "./pixi/assets/red_line_pachinko_final.wav"
 import LandingSound from "./pixi/assets/landing_screen_music_loop_final.wav"
 import { sound } from '@pixi/sound';
+import { INTERFACE_STATE } from "./constants.js";
 
 if (!window.PACHINGO) window.PACHINGO = {}
 window.PACHINGO.sound = sound
@@ -35,11 +37,11 @@ export default class PixiWrapper extends React.Component {
   onKeyDown = async (e) => { 
     console.log(e.key)
     const deltaX = this.props.selectedNode.column - 1
-    if (e.key == "1") {
+    if (e.key == "q") {
       await this._pAppContainer.setStateWon(deltaX, 1, 0, 1, 100, [false, true, true, false, true])
       window.PACHINGO.onWin()
     }
-    if (e.key == "2") {
+    if (e.key == "w") {
       await this._pAppContainer.setStateLost(deltaX, 1, 0, 1, 100, [false, true, true, false, true])
       window.PACHINGO.onLose()
     }
@@ -108,6 +110,7 @@ export default class PixiWrapper extends React.Component {
         loader.add("HeadTop", HeadTop)
         loader.add("HeadJaw", HeadJaw)
         loader.add("HeadTentacles", HeadTentacles)
+        loader.add("Background", BackgroundImage)
         //loader.add("MainLoop", MainLoopSound)
         loader.onComplete.add(() => { res() })
         loader.load()
@@ -153,6 +156,14 @@ export default class PixiWrapper extends React.Component {
       } else if (resolved == 2) {
         this._pAppContainer.setStateLost(deltaX, deltaY, odds, resolved, wager, wentUp)
         // Lost
+      }
+    }
+
+    if (oldProps.currentView != this.props.currentView) {
+      if (this.props.currentView == INTERFACE_STATE.NOW) {
+        this._pAppContainer.setInterfaceNow(true)
+      } else if (this.props.currentView == INTERFACE_STATE.ALL_TIME) {
+        this._pAppContainer.setInterfaceNow(false)
       }
     }
   }

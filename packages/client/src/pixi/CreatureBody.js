@@ -61,16 +61,16 @@ export default class CreatureBody extends PIXI.Container {
     let delta = previousDelta
 
     let delay = 0
-    let stagger = 0.075
+    let stagger = 0.025
     let promises = []
 
     for (let i = 0; i < this.container.children.length; i++) {
       let bodyPart = this.container.children[i]
 
-      let duration = 0.04
+      let duration = 0.8
       let tweenPromise = pifyTween(new TWEEN.Tween(bodyPart.position)
       .to({ y: delta * bodyPart.getCoreHeight() / 2 }, duration * 1000)
-      .easing(TWEEN.Easing.Cubic.InOut)
+      .easing(TWEEN.Easing.Elastic.InOut)
       .delay(delay * 1000)
       .start())
       promises.push(tweenPromise)

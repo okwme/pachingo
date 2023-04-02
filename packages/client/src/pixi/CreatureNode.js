@@ -1,6 +1,9 @@
 import * as PIXI from 'pixi.js'
 import CreatureWing from './CreatureWing'
 import { range } from "canvas-sketch-util/random"
+import * as TWEEN from '@tweenjs/tween.js'
+import { pifyTween } from './pixiUtils'
+import * as math from "canvas-sketch-util/math"
 
 export default class CreatureNode extends PIXI.Container {
   constructor(nodeIndex) {
@@ -44,12 +47,24 @@ export default class CreatureNode extends PIXI.Container {
 
     if (nodeIndex == 1) this.joint.alpha = 0
 
+    this.td = 600
+    this.ad = 2000
+
     // this.position.set(500, 500)
     // this.scale.set(0.2)
   }
 
-  setJointUp(isUp) {
-    this.joint.position.y = (isUp ? -1 : 1) * this.getCoreHeight() / 4
+  async setJointUp(isUp) {
+
+    let duration = 0.5
+    let delay = 0.1
+    await pifyTween(new TWEEN.Tween(this.joint.position)
+    .to({ y: (isUp ? -1 : 1) * this.getCoreHeight() / 4 }, duration * 1000)
+    .easing(TWEEN.Easing.Cubic.InOut)
+    .delay(delay * 1000)
+    .start())
+
+    // this.joint.position.y = (isUp ? -1 : 1) * this.getCoreHeight() / 4
   }
 
   async updatePosition(newY, isJointUp) {
@@ -67,8 +82,22 @@ export default class CreatureNode extends PIXI.Container {
   tick() {
     const now = (new Date()).getTime() - this.nodeIndex * 700
     const now2 = now + 400
-    this.bottomWing.rotation += (Math.sin(now / 600) / 2000)
-    this.topWing.rotation -= (Math.sin(now2 / 600) / 2000)
+
+    let timeDiv = 200
+    let ampDiv = 800
+    if (window.creatureWingParams && window.creatureWingParams.timeDivider) {
+      timeDiv = window.creatureWingParams.timeDivider
+      ampDiv = window.creatureWingParams.amplitudeDivider
+    }
+
+    let damping = 0
+    this.td = damping * this.td + (1 - damping) * timeDiv
+    this.ad = damping * this.ad + (1 - damping) * ampDiv
+
+    this.bottomWing.rotation += (Math.sin(now / this.td) / this.ad)
+    this.bottomWing.rotation = math.clamp(this.bottomWing.rotation, Math.PI - 0.2, Math.PI + 0.2)
+    this.topWing.rotation -= (Math.sin(now2 / this.td) / this.ad)
+    this.topWing.rotation = math.clamp(this.topWing.rotation, -0.2, 0.2)
     this.joint.rotation += this.jointRotationSpeed
     // this.rotation += (Math.cos(now / 1500) / 6400)
     // this.scale.set(0.2 * (1 + (Math.sin(now / 1400) + 1) / 32))

@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js'
 import GraphNode from './GraphNode'
 import delay from "delay"
+import { sound } from '@pixi/sound';
 
 export default class Graph extends PIXI.Container {
   constructor(noColumns, rowGap, columnGap, nodeRadius = 20, color = 0xffffff) {
@@ -114,6 +115,7 @@ export default class Graph extends PIXI.Container {
 
     await Promise.all(promises)
 
+    let index = 0
     for (let column = 1; column <= this.noColumns; column++) {
       for (let row = 1; row <= column; row++) {
         if (column == this.noColumns) {
@@ -132,8 +134,12 @@ export default class Graph extends PIXI.Container {
           this.nodes[column][row].position.y = newPos.y
         }
 
-        if (column < this.noColumns)
+        if (index % 3 == 0 && column < this.noColumns - 1) sound.play("LineSound")
+        index++
+
+        if (column < this.noColumns) {
           await delay(50)
+        }
       }
     }
 

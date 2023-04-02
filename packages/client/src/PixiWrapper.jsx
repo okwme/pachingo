@@ -12,6 +12,8 @@ import HeadTentacles from "./pixi/assets/HeadTentacles.png"
 import MainLoopSound from "./pixi/assets/bakground_ambience_for_gameplay_final.mp3"
 import WinSound from "./pixi/assets/win_pop_up_sound_final.wav"
 import BetSound from "./pixi/assets/place_bed_sound_final.wav"
+import BallSound from "./pixi/assets/red_ball_pachinko_final.wav"
+import LineSound from "./pixi/assets/red_line_pachinko_final.wav"
 import { sound } from '@pixi/sound';
 
 if (!window.PACHINGO) window.PACHINGO = {}
@@ -80,6 +82,8 @@ export default class PixiWrapper extends React.Component {
     sound.add("MainLoop", MainLoopSound)
     sound.add("WinSound", WinSound)
     sound.add("BetSound", BetSound)
+    sound.add("BallSound", BallSound)
+    sound.add("LineSound", LineSound)
     sound.play("MainLoop", { loop: true, volume: 0.6 })
 
     await this.startApp()

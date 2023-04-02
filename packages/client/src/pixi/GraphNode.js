@@ -153,6 +153,15 @@ export default class GraphNode extends PIXI.Container {
 
   async setIsWinningState(isWinningState, wentUp, shouldColorEdge) {
     if (isWinningState) {
+
+      sound.play("BallSound")
+      let lineSoundPromise = async () => {
+        await delay(200)
+        sound.play("LineSound")        
+      }
+      lineSoundPromise()
+      
+
       this.oldColor = this.color
 
       const pixiRGB = PIXI.utils.hex2rgb(this.color)
@@ -165,13 +174,13 @@ export default class GraphNode extends PIXI.Container {
         else { this.drawBottomEdge() }
       }
 
-      const duration = 1
-      const delay = 0
+      const duration = 0.5
+      const delayValue = 0
 
       await pifyTween(new TWEEN.Tween(this.colorRGB)
       .to({ r: 0, g: 1, b: 0 }, duration * 1000)
       .easing(TWEEN.Easing.Cubic.InOut)
-      .delay(delay * 1000)
+      .delay(delayValue * 1000)
       .onUpdate(() => { 
         console.log(this.colorRGB)
         this.color = PIXI.utils.rgb2hex([this.colorRGB.r, this.colorRGB.g, this.colorRGB.b])

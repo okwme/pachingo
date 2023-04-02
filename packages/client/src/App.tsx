@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { useMUD } from "./MUDContext";
 import PixiWrapper from "./PixiWrapper.jsx";
@@ -106,8 +106,8 @@ export const App = () => {
 
 
   const yourCandy = 325
-  const [betAmount, setBetAmount] = useState(5)
-  const [probability, setProbability] = useState(0.125)
+  const [betAmount, setBetAmount] = useState(1)
+  const [probability, setProbability] = useState(0)
   const [selectedNode, setSelectedNode] = useState({ column: -1, row: -1, probability: 0 })
   let nextBlockIterator
   // shiiiiii  
@@ -191,17 +191,18 @@ export const App = () => {
     <>
       <PixiWrapper selectedNode={selectedNode} currentView={currentView} allBets={allBets} />
       <UIWrapper
+        bankAmount={bankBalance}
         currentView={currentView}
         onViewChange={onViewChange}
         houseCandy={houseCandy}
-        yourCandy={yourCandy}
+        userBalance={userBalance}
         betAmount={betAmount}
         setBetAmount={setBetAmount}
         probability={selectedNode.probability}
         onBet={onBet}
         betDisabled={selectedNode.column < 0}
       />
-      {<div style={{ zIndex: "999", position: "fixed", top: 0, left: 0 }} onClick={initializeWorld}>initializeWorld</div>}
+      {(!initialized && bankBalance == "0") && <div style={{ zIndex: "999", position: "fixed", top: 0, left: 0 }} onClick={initializeWorld}>initializeWorld</div>}
       <WonOverlay isWonActive={isWonActive} setIsWonActive={setIsWonActive} />
       <WelcomeOverlay isWelcomeActive={isWelcomeActive} setIsWelcomeActive={setIsWelcomeActive} />
     </>

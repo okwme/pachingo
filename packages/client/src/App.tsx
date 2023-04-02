@@ -46,7 +46,7 @@ export const App = () => {
 
 
 
-  const counter = useComponentValue(CounterTable, singletonEntity);
+  //const counter = useComponentValue(CounterTable, singletonEntity);
 
   const houseCandy = 1320000
   const yourCandy = 325

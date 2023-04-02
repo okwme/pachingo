@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js'
 import Graph from './Graph';
+import CreatureNode from './CreatureNode';
 
 export default class AppContainer extends PIXI.Container {
   constructor(width, height) {
@@ -8,7 +9,7 @@ export default class AppContainer extends PIXI.Container {
     this.H = height;
 
     this.background = new PIXI.Graphics();
-    this.background.beginFill(0xd2f2d2)
+    this.background.beginFill(0xa2d2a2)
     this.background.drawRect(0, 0, this.W, this.H)
     this.addChild(this.background);
 
@@ -16,6 +17,9 @@ export default class AppContainer extends PIXI.Container {
     this.addChild(this.graph)
     this.graph.position.x = this.W / 2
     this.graph.position.y = this.H / 2
+
+    this.oneNode = new CreatureNode()
+    this.addChild(this.oneNode)
   }
 
   setSelectedNode(selectedNode) {
@@ -23,6 +27,6 @@ export default class AppContainer extends PIXI.Container {
   }
 
   tick() {
-
+    this.oneNode.tick()
   }
 }

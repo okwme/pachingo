@@ -20,11 +20,17 @@ import { PackedCounter, PackedCounterLib } from "@latticexyz/store/src/PackedCou
 uint256 constant _tableId = uint256(bytes32(abi.encodePacked(bytes16(""), bytes16("Bank"))));
 uint256 constant BankTableId = _tableId;
 
+struct BankData {
+  uint256 balance;
+  uint256 escrow;
+}
+
 library Bank {
   /** Get the table's schema */
   function getSchema() internal pure returns (Schema) {
-    SchemaType[] memory _schema = new SchemaType[](1);
+    SchemaType[] memory _schema = new SchemaType[](2);
     _schema[0] = SchemaType.UINT256;
+    _schema[1] = SchemaType.UINT256;
 
     return SchemaLib.encode(_schema);
   }
@@ -37,8 +43,9 @@ library Bank {
 
   /** Get the table's metadata */
   function getMetadata() internal pure returns (string memory, string[] memory) {
-    string[] memory _fieldNames = new string[](1);
-    _fieldNames[0] = "held";
+    string[] memory _fieldNames = new string[](2);
+    _fieldNames[0] = "balance";
+    _fieldNames[1] = "escrow";
     return ("Bank", _fieldNames);
   }
 
@@ -47,30 +54,137 @@ library Bank {
     StoreSwitch.registerSchema(_tableId, getSchema(), getKeySchema());
   }
 
+  /** Register the table's schema (using the specified store) */
+  function registerSchema(IStore _store) internal {
+    _store.registerSchema(_tableId, getSchema(), getKeySchema());
+  }
+
   /** Set the table's metadata */
   function setMetadata() internal {
     (string memory _tableName, string[] memory _fieldNames) = getMetadata();
     StoreSwitch.setMetadata(_tableId, _tableName, _fieldNames);
   }
 
-  /** Get held */
-  function get() internal view returns (uint256 held) {
+  /** Set the table's metadata (using the specified store) */
+  function setMetadata(IStore _store) internal {
+    (string memory _tableName, string[] memory _fieldNames) = getMetadata();
+    _store.setMetadata(_tableId, _tableName, _fieldNames);
+  }
+
+  /** Get balance */
+  function getBalance() internal view returns (uint256 balance) {
     bytes32[] memory _primaryKeys = new bytes32[](0);
 
     bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 0);
     return (uint256(Bytes.slice32(_blob, 0)));
   }
 
-  /** Set held */
-  function set(uint256 held) internal {
+  /** Get balance (using the specified store) */
+  function getBalance(IStore _store) internal view returns (uint256 balance) {
     bytes32[] memory _primaryKeys = new bytes32[](0);
 
-    StoreSwitch.setField(_tableId, _primaryKeys, 0, abi.encodePacked((held)));
+    bytes memory _blob = _store.getField(_tableId, _primaryKeys, 0);
+    return (uint256(Bytes.slice32(_blob, 0)));
+  }
+
+  /** Set balance */
+  function setBalance(uint256 balance) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](0);
+
+    StoreSwitch.setField(_tableId, _primaryKeys, 0, abi.encodePacked((balance)));
+  }
+
+  /** Set balance (using the specified store) */
+  function setBalance(IStore _store, uint256 balance) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](0);
+
+    _store.setField(_tableId, _primaryKeys, 0, abi.encodePacked((balance)));
+  }
+
+  /** Get escrow */
+  function getEscrow() internal view returns (uint256 escrow) {
+    bytes32[] memory _primaryKeys = new bytes32[](0);
+
+    bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 1);
+    return (uint256(Bytes.slice32(_blob, 0)));
+  }
+
+  /** Get escrow (using the specified store) */
+  function getEscrow(IStore _store) internal view returns (uint256 escrow) {
+    bytes32[] memory _primaryKeys = new bytes32[](0);
+
+    bytes memory _blob = _store.getField(_tableId, _primaryKeys, 1);
+    return (uint256(Bytes.slice32(_blob, 0)));
+  }
+
+  /** Set escrow */
+  function setEscrow(uint256 escrow) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](0);
+
+    StoreSwitch.setField(_tableId, _primaryKeys, 1, abi.encodePacked((escrow)));
+  }
+
+  /** Set escrow (using the specified store) */
+  function setEscrow(IStore _store, uint256 escrow) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](0);
+
+    _store.setField(_tableId, _primaryKeys, 1, abi.encodePacked((escrow)));
+  }
+
+  /** Get the full data */
+  function get() internal view returns (BankData memory _table) {
+    bytes32[] memory _primaryKeys = new bytes32[](0);
+
+    bytes memory _blob = StoreSwitch.getRecord(_tableId, _primaryKeys, getSchema());
+    return decode(_blob);
+  }
+
+  /** Get the full data (using the specified store) */
+  function get(IStore _store) internal view returns (BankData memory _table) {
+    bytes32[] memory _primaryKeys = new bytes32[](0);
+
+    bytes memory _blob = _store.getRecord(_tableId, _primaryKeys, getSchema());
+    return decode(_blob);
+  }
+
+  /** Set the full data using individual values */
+  function set(uint256 balance, uint256 escrow) internal {
+    bytes memory _data = encode(balance, escrow);
+
+    bytes32[] memory _primaryKeys = new bytes32[](0);
+
+    StoreSwitch.setRecord(_tableId, _primaryKeys, _data);
+  }
+
+  /** Set the full data using individual values (using the specified store) */
+  function set(IStore _store, uint256 balance, uint256 escrow) internal {
+    bytes memory _data = encode(balance, escrow);
+
+    bytes32[] memory _primaryKeys = new bytes32[](0);
+
+    _store.setRecord(_tableId, _primaryKeys, _data);
+  }
+
+  /** Set the full data using the data struct */
+  function set(BankData memory _table) internal {
+    set(_table.balance, _table.escrow);
+  }
+
+  /** Set the full data using the data struct (using the specified store) */
+  function set(IStore _store, BankData memory _table) internal {
+    set(_store, _table.balance, _table.escrow);
+  }
+
+  /** Decode the tightly packed blob using this table's schema */
+  function decode(bytes memory _blob) internal pure returns (BankData memory _table) {
+    _table.balance = (uint256(Bytes.slice32(_blob, 0)));
+
+    _table.escrow = (uint256(Bytes.slice32(_blob, 32)));
   }
 
   /** Tightly pack full data using this table's schema */
-  function encode(uint256 held) internal view returns (bytes memory) {
-    return abi.encodePacked(held);
+  function encode(uint256 balance, uint256 escrow) internal view returns (bytes memory) {
+    return abi.encodePacked(balance, escrow);
   }
 
   /* Delete all data for given keys */
@@ -78,5 +192,12 @@ library Bank {
     bytes32[] memory _primaryKeys = new bytes32[](0);
 
     StoreSwitch.deleteRecord(_tableId, _primaryKeys);
+  }
+
+  /* Delete all data for given keys (using the specified store) */
+  function deleteRecord(IStore _store) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](0);
+
+    _store.deleteRecord(_tableId, _primaryKeys);
   }
 }

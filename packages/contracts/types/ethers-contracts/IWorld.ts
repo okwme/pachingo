@@ -9,6 +9,7 @@ import type {
   CallOverrides,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -54,6 +55,7 @@ export interface IWorldInterface extends utils.Interface {
     "registerStoreHook(uint256,address)": FunctionFragment;
     "resolveBet()": FunctionFragment;
     "retractAccess(bytes16,bytes16,address)": FunctionFragment;
+    "sendMoney()": FunctionFragment;
     "setField(bytes16,bytes16,bytes32[],uint8,bytes)": FunctionFragment;
     "setField(uint256,bytes32[],uint8,bytes)": FunctionFragment;
     "setMetadata(uint256,string,string[])": FunctionFragment;
@@ -88,6 +90,7 @@ export interface IWorldInterface extends utils.Interface {
       | "registerStoreHook"
       | "resolveBet"
       | "retractAccess"
+      | "sendMoney"
       | "setField(bytes16,bytes16,bytes32[],uint8,bytes)"
       | "setField(uint256,bytes32[],uint8,bytes)"
       | "setMetadata"
@@ -236,6 +239,7 @@ export interface IWorldInterface extends utils.Interface {
       PromiseOrValue<string>
     ]
   ): string;
+  encodeFunctionData(functionFragment: "sendMoney", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "setField(bytes16,bytes16,bytes32[],uint8,bytes)",
     values: [
@@ -354,6 +358,7 @@ export interface IWorldInterface extends utils.Interface {
     functionFragment: "retractAccess",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "sendMoney", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setField(bytes16,bytes16,bytes32[],uint8,bytes)",
     data: BytesLike
@@ -454,21 +459,26 @@ export interface IWorld extends BaseContract {
       deltaX: PromiseOrValue<BigNumberish>,
       deltaY: PromiseOrValue<BigNumberish>,
       wager: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     calculateResults(
       openBet: PromiseOrValue<BigNumberish>,
       deltaX: PromiseOrValue<BigNumberish>,
       deltaY: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+      overrides?: CallOverrides
+    ): Promise<
+      [[boolean, boolean, boolean, boolean, boolean], BigNumber] & {
+        wentUp: [boolean, boolean, boolean, boolean, boolean];
+        accumulativeDeltaY: BigNumber;
+      }
+    >;
 
     call(
       namespace: PromiseOrValue<BytesLike>,
       file: PromiseOrValue<BytesLike>,
       funcSelectorAndArgs: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     "deleteRecord(uint256,bytes32[])"(
@@ -484,9 +494,7 @@ export interface IWorld extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    getBank(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+    getBank(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     getField(
       table: PromiseOrValue<BigNumberish>,
@@ -503,14 +511,14 @@ export interface IWorld extends BaseContract {
     getOdds(
       deltaX: PromiseOrValue<BigNumberish>,
       deltaY: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     getPayout(
       wager: PromiseOrValue<BigNumberish>,
       odds: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     "getRecord(uint256,bytes32[],bytes32)"(
       table: PromiseOrValue<BigNumberish>,
@@ -560,7 +568,7 @@ export interface IWorld extends BaseContract {
     makeBet(
       deltaX: PromiseOrValue<BigNumberish>,
       deltaY: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     "pushToField(uint256,bytes32[],uint8,bytes)"(
@@ -602,6 +610,10 @@ export interface IWorld extends BaseContract {
       file: PromiseOrValue<BytesLike>,
       grantee: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    sendMoney(
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     "setField(bytes16,bytes16,bytes32[],uint8,bytes)"(
@@ -648,21 +660,26 @@ export interface IWorld extends BaseContract {
     deltaX: PromiseOrValue<BigNumberish>,
     deltaY: PromiseOrValue<BigNumberish>,
     wager: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   calculateResults(
     openBet: PromiseOrValue<BigNumberish>,
     deltaX: PromiseOrValue<BigNumberish>,
     deltaY: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+    overrides?: CallOverrides
+  ): Promise<
+    [[boolean, boolean, boolean, boolean, boolean], BigNumber] & {
+      wentUp: [boolean, boolean, boolean, boolean, boolean];
+      accumulativeDeltaY: BigNumber;
+    }
+  >;
 
   call(
     namespace: PromiseOrValue<BytesLike>,
     file: PromiseOrValue<BytesLike>,
     funcSelectorAndArgs: PromiseOrValue<BytesLike>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   "deleteRecord(uint256,bytes32[])"(
@@ -678,9 +695,7 @@ export interface IWorld extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  getBank(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+  getBank(overrides?: CallOverrides): Promise<BigNumber>;
 
   getField(
     table: PromiseOrValue<BigNumberish>,
@@ -697,14 +712,14 @@ export interface IWorld extends BaseContract {
   getOdds(
     deltaX: PromiseOrValue<BigNumberish>,
     deltaY: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   getPayout(
     wager: PromiseOrValue<BigNumberish>,
     odds: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   "getRecord(uint256,bytes32[],bytes32)"(
     table: PromiseOrValue<BigNumberish>,
@@ -754,7 +769,7 @@ export interface IWorld extends BaseContract {
   makeBet(
     deltaX: PromiseOrValue<BigNumberish>,
     deltaY: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   "pushToField(uint256,bytes32[],uint8,bytes)"(
@@ -796,6 +811,10 @@ export interface IWorld extends BaseContract {
     file: PromiseOrValue<BytesLike>,
     grantee: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  sendMoney(
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   "setField(bytes16,bytes16,bytes32[],uint8,bytes)"(
@@ -851,8 +870,8 @@ export interface IWorld extends BaseContract {
       deltaY: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<
-      [boolean[], BigNumber] & {
-        wentUp: boolean[];
+      [[boolean, boolean, boolean, boolean, boolean], BigNumber] & {
+        wentUp: [boolean, boolean, boolean, boolean, boolean];
         accumulativeDeltaY: BigNumber;
       }
     >;
@@ -993,6 +1012,8 @@ export interface IWorld extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    sendMoney(overrides?: CallOverrides): Promise<void>;
+
     "setField(bytes16,bytes16,bytes32[],uint8,bytes)"(
       namespace: PromiseOrValue<BytesLike>,
       file: PromiseOrValue<BytesLike>,
@@ -1070,21 +1091,21 @@ export interface IWorld extends BaseContract {
       deltaX: PromiseOrValue<BigNumberish>,
       deltaY: PromiseOrValue<BigNumberish>,
       wager: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     calculateResults(
       openBet: PromiseOrValue<BigNumberish>,
       deltaX: PromiseOrValue<BigNumberish>,
       deltaY: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     call(
       namespace: PromiseOrValue<BytesLike>,
       file: PromiseOrValue<BytesLike>,
       funcSelectorAndArgs: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     "deleteRecord(uint256,bytes32[])"(
@@ -1100,9 +1121,7 @@ export interface IWorld extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    getBank(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
+    getBank(overrides?: CallOverrides): Promise<BigNumber>;
 
     getField(
       table: PromiseOrValue<BigNumberish>,
@@ -1119,13 +1138,13 @@ export interface IWorld extends BaseContract {
     getOdds(
       deltaX: PromiseOrValue<BigNumberish>,
       deltaY: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     getPayout(
       wager: PromiseOrValue<BigNumberish>,
       odds: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     "getRecord(uint256,bytes32[],bytes32)"(
@@ -1176,7 +1195,7 @@ export interface IWorld extends BaseContract {
     makeBet(
       deltaX: PromiseOrValue<BigNumberish>,
       deltaY: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     "pushToField(uint256,bytes32[],uint8,bytes)"(
@@ -1218,6 +1237,10 @@ export interface IWorld extends BaseContract {
       file: PromiseOrValue<BytesLike>,
       grantee: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    sendMoney(
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     "setField(bytes16,bytes16,bytes32[],uint8,bytes)"(
@@ -1265,21 +1288,21 @@ export interface IWorld extends BaseContract {
       deltaX: PromiseOrValue<BigNumberish>,
       deltaY: PromiseOrValue<BigNumberish>,
       wager: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     calculateResults(
       openBet: PromiseOrValue<BigNumberish>,
       deltaX: PromiseOrValue<BigNumberish>,
       deltaY: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     call(
       namespace: PromiseOrValue<BytesLike>,
       file: PromiseOrValue<BytesLike>,
       funcSelectorAndArgs: PromiseOrValue<BytesLike>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     "deleteRecord(uint256,bytes32[])"(
@@ -1295,9 +1318,7 @@ export interface IWorld extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    getBank(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
+    getBank(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getField(
       table: PromiseOrValue<BigNumberish>,
@@ -1314,13 +1335,13 @@ export interface IWorld extends BaseContract {
     getOdds(
       deltaX: PromiseOrValue<BigNumberish>,
       deltaY: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     getPayout(
       wager: PromiseOrValue<BigNumberish>,
       odds: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     "getRecord(uint256,bytes32[],bytes32)"(
@@ -1371,7 +1392,7 @@ export interface IWorld extends BaseContract {
     makeBet(
       deltaX: PromiseOrValue<BigNumberish>,
       deltaY: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     "pushToField(uint256,bytes32[],uint8,bytes)"(
@@ -1413,6 +1434,10 @@ export interface IWorld extends BaseContract {
       file: PromiseOrValue<BytesLike>,
       grantee: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    sendMoney(
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     "setField(bytes16,bytes16,bytes32[],uint8,bytes)"(

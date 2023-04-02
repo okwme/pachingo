@@ -16,10 +16,10 @@ export default class UIWrapper extends React.Component {
     this.props.onViewChange(view)
   }
   render() {
-    const { currentView, houseCandy, yourCandy, betAmount, setBetAmount, probability } = this.props
+    const { currentView, houseCandy, yourCandy, betAmount, setBetAmount, probability, onBet, betDisabled } = this.props
 
     console.log("Probability: ", probability)
-    
+
     const nowClassnames = classnames({ "button-component": true, active: (currentView == INTERFACE_STATE.NOW) })
 
     return (
@@ -71,8 +71,8 @@ export default class UIWrapper extends React.Component {
               </div>
             </div>
 
-            <div className="place-bet-button">
-              <div className="overlay-button button-wide">Bet</div>
+            <div className={"place-bet-button " + betDisabled && 'disabled'}>
+              <div onClick={onBet} className="overlay-button button-wide">Bet</div>
             </div>
           </div>
         </div>

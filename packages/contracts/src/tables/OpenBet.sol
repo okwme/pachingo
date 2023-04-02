@@ -47,10 +47,21 @@ library OpenBet {
     StoreSwitch.registerSchema(_tableId, getSchema(), getKeySchema());
   }
 
+  /** Register the table's schema (using the specified store) */
+  function registerSchema(IStore _store) internal {
+    _store.registerSchema(_tableId, getSchema(), getKeySchema());
+  }
+
   /** Set the table's metadata */
   function setMetadata() internal {
     (string memory _tableName, string[] memory _fieldNames) = getMetadata();
     StoreSwitch.setMetadata(_tableId, _tableName, _fieldNames);
+  }
+
+  /** Set the table's metadata (using the specified store) */
+  function setMetadata(IStore _store) internal {
+    (string memory _tableName, string[] memory _fieldNames) = getMetadata();
+    _store.setMetadata(_tableId, _tableName, _fieldNames);
   }
 
   /** Get open */
@@ -61,11 +72,26 @@ library OpenBet {
     return (uint256(Bytes.slice32(_blob, 0)));
   }
 
+  /** Get open (using the specified store) */
+  function get(IStore _store) internal view returns (uint256 open) {
+    bytes32[] memory _primaryKeys = new bytes32[](0);
+
+    bytes memory _blob = _store.getField(_tableId, _primaryKeys, 0);
+    return (uint256(Bytes.slice32(_blob, 0)));
+  }
+
   /** Set open */
   function set(uint256 open) internal {
     bytes32[] memory _primaryKeys = new bytes32[](0);
 
     StoreSwitch.setField(_tableId, _primaryKeys, 0, abi.encodePacked((open)));
+  }
+
+  /** Set open (using the specified store) */
+  function set(IStore _store, uint256 open) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](0);
+
+    _store.setField(_tableId, _primaryKeys, 0, abi.encodePacked((open)));
   }
 
   /** Tightly pack full data using this table's schema */
@@ -78,5 +104,12 @@ library OpenBet {
     bytes32[] memory _primaryKeys = new bytes32[](0);
 
     StoreSwitch.deleteRecord(_tableId, _primaryKeys);
+  }
+
+  /* Delete all data for given keys (using the specified store) */
+  function deleteRecord(IStore _store) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](0);
+
+    _store.deleteRecord(_tableId, _primaryKeys);
   }
 }

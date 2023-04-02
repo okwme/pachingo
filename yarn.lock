@@ -224,15 +224,125 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
+"@esbuild/android-arm64@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/android-arm64/-/android-arm64-0.17.15.tgz#893ad71f3920ccb919e1757c387756a9bca2ef42"
+  integrity sha512-0kOB6Y7Br3KDVgHeg8PRcvfLkq+AccreK///B4Z6fNZGr/tNHX0z2VywCc7PTeWp+bPvjA5WMvNXltHw5QjAIA==
+
 "@esbuild/android-arm@0.15.18":
   version "0.15.18"
   resolved "https://registry.yarnpkg.com/@esbuild/android-arm/-/android-arm-0.15.18.tgz#266d40b8fdcf87962df8af05b76219bc786b4f80"
   integrity sha512-5GT+kcs2WVGjVs7+boataCkO5Fg0y4kCjzkB5bAip7H4jfnOS3dA6KPiww9W1OEKTKeAcUVhdZGvgI65OXmUnw==
 
+"@esbuild/android-arm@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/android-arm/-/android-arm-0.17.15.tgz#143e0d4e4c08c786ea410b9a7739779a9a1315d8"
+  integrity sha512-sRSOVlLawAktpMvDyJIkdLI/c/kdRTOqo8t6ImVxg8yT7LQDUYV5Rp2FKeEosLr6ZCja9UjYAzyRSxGteSJPYg==
+
+"@esbuild/android-x64@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/android-x64/-/android-x64-0.17.15.tgz#d2d12a7676b2589864281b2274355200916540bc"
+  integrity sha512-MzDqnNajQZ63YkaUWVl9uuhcWyEyh69HGpMIrf+acR4otMkfLJ4sUCxqwbCyPGicE9dVlrysI3lMcDBjGiBBcQ==
+
+"@esbuild/darwin-arm64@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/darwin-arm64/-/darwin-arm64-0.17.15.tgz#2e88e79f1d327a2a7d9d06397e5232eb0a473d61"
+  integrity sha512-7siLjBc88Z4+6qkMDxPT2juf2e8SJxmsbNVKFY2ifWCDT72v5YJz9arlvBw5oB4W/e61H1+HDB/jnu8nNg0rLA==
+
+"@esbuild/darwin-x64@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/darwin-x64/-/darwin-x64-0.17.15.tgz#9384e64c0be91388c57be6d3a5eaf1c32a99c91d"
+  integrity sha512-NbImBas2rXwYI52BOKTW342Tm3LTeVlaOQ4QPZ7XuWNKiO226DisFk/RyPk3T0CKZkKMuU69yOvlapJEmax7cg==
+
+"@esbuild/freebsd-arm64@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/freebsd-arm64/-/freebsd-arm64-0.17.15.tgz#2ad5a35bc52ebd9ca6b845dbc59ba39647a93c1a"
+  integrity sha512-Xk9xMDjBVG6CfgoqlVczHAdJnCs0/oeFOspFap5NkYAmRCT2qTn1vJWA2f419iMtsHSLm+O8B6SLV/HlY5cYKg==
+
+"@esbuild/freebsd-x64@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/freebsd-x64/-/freebsd-x64-0.17.15.tgz#b513a48446f96c75fda5bef470e64d342d4379cd"
+  integrity sha512-3TWAnnEOdclvb2pnfsTWtdwthPfOz7qAfcwDLcfZyGJwm1SRZIMOeB5FODVhnM93mFSPsHB9b/PmxNNbSnd0RQ==
+
+"@esbuild/linux-arm64@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/linux-arm64/-/linux-arm64-0.17.15.tgz#9697b168175bfd41fa9cc4a72dd0d48f24715f31"
+  integrity sha512-T0MVnYw9KT6b83/SqyznTs/3Jg2ODWrZfNccg11XjDehIved2oQfrX/wVuev9N936BpMRaTR9I1J0tdGgUgpJA==
+
+"@esbuild/linux-arm@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/linux-arm/-/linux-arm-0.17.15.tgz#5b22062c54f48cd92fab9ffd993732a52db70cd3"
+  integrity sha512-MLTgiXWEMAMr8nmS9Gigx43zPRmEfeBfGCwxFQEMgJ5MC53QKajaclW6XDPjwJvhbebv+RzK05TQjvH3/aM4Xw==
+
+"@esbuild/linux-ia32@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/linux-ia32/-/linux-ia32-0.17.15.tgz#eb28a13f9b60b5189fcc9e98e1024f6b657ba54c"
+  integrity sha512-wp02sHs015T23zsQtU4Cj57WiteiuASHlD7rXjKUyAGYzlOKDAjqK6bk5dMi2QEl/KVOcsjwL36kD+WW7vJt8Q==
+
 "@esbuild/linux-loong64@0.15.18":
   version "0.15.18"
   resolved "https://registry.yarnpkg.com/@esbuild/linux-loong64/-/linux-loong64-0.15.18.tgz#128b76ecb9be48b60cf5cfc1c63a4f00691a3239"
   integrity sha512-L4jVKS82XVhw2nvzLg/19ClLWg0y27ulRwuP7lcyL6AbUWB5aPglXY3M21mauDQMDfRLs8cQmeT03r/+X3cZYQ==
+
+"@esbuild/linux-loong64@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/linux-loong64/-/linux-loong64-0.17.15.tgz#32454bdfe144cf74b77895a8ad21a15cb81cfbe5"
+  integrity sha512-k7FsUJjGGSxwnBmMh8d7IbObWu+sF/qbwc+xKZkBe/lTAF16RqxRCnNHA7QTd3oS2AfGBAnHlXL67shV5bBThQ==
+
+"@esbuild/linux-mips64el@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/linux-mips64el/-/linux-mips64el-0.17.15.tgz#af12bde0d775a318fad90eb13a0455229a63987c"
+  integrity sha512-ZLWk6czDdog+Q9kE/Jfbilu24vEe/iW/Sj2d8EVsmiixQ1rM2RKH2n36qfxK4e8tVcaXkvuV3mU5zTZviE+NVQ==
+
+"@esbuild/linux-ppc64@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/linux-ppc64/-/linux-ppc64-0.17.15.tgz#34c5ed145b2dfc493d3e652abac8bd3baa3865a5"
+  integrity sha512-mY6dPkIRAiFHRsGfOYZC8Q9rmr8vOBZBme0/j15zFUKM99d4ILY4WpOC7i/LqoY+RE7KaMaSfvY8CqjJtuO4xg==
+
+"@esbuild/linux-riscv64@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/linux-riscv64/-/linux-riscv64-0.17.15.tgz#87bd515e837f2eb004b45f9e6a94dc5b93f22b92"
+  integrity sha512-EcyUtxffdDtWjjwIH8sKzpDRLcVtqANooMNASO59y+xmqqRYBBM7xVLQhqF7nksIbm2yHABptoioS9RAbVMWVA==
+
+"@esbuild/linux-s390x@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/linux-s390x/-/linux-s390x-0.17.15.tgz#20bf7947197f199ddac2ec412029a414ceae3aa3"
+  integrity sha512-BuS6Jx/ezxFuHxgsfvz7T4g4YlVrmCmg7UAwboeyNNg0OzNzKsIZXpr3Sb/ZREDXWgt48RO4UQRDBxJN3B9Rbg==
+
+"@esbuild/linux-x64@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/linux-x64/-/linux-x64-0.17.15.tgz#31b93f9c94c195e852c20cd3d1914a68aa619124"
+  integrity sha512-JsdS0EgEViwuKsw5tiJQo9UdQdUJYuB+Mf6HxtJSPN35vez1hlrNb1KajvKWF5Sa35j17+rW1ECEO9iNrIXbNg==
+
+"@esbuild/netbsd-x64@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/netbsd-x64/-/netbsd-x64-0.17.15.tgz#8da299b3ac6875836ca8cdc1925826498069ac65"
+  integrity sha512-R6fKjtUysYGym6uXf6qyNephVUQAGtf3n2RCsOST/neIwPqRWcnc3ogcielOd6pT+J0RDR1RGcy0ZY7d3uHVLA==
+
+"@esbuild/openbsd-x64@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/openbsd-x64/-/openbsd-x64-0.17.15.tgz#04a1ec3d4e919714dba68dcf09eeb1228ad0d20c"
+  integrity sha512-mVD4PGc26b8PI60QaPUltYKeSX0wxuy0AltC+WCTFwvKCq2+OgLP4+fFd+hZXzO2xW1HPKcytZBdjqL6FQFa7w==
+
+"@esbuild/sunos-x64@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/sunos-x64/-/sunos-x64-0.17.15.tgz#6694ebe4e16e5cd7dab6505ff7c28f9c1c695ce5"
+  integrity sha512-U6tYPovOkw3459t2CBwGcFYfFRjivcJJc1WC8Q3funIwX8x4fP+R6xL/QuTPNGOblbq/EUDxj9GU+dWKX0oWlQ==
+
+"@esbuild/win32-arm64@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/win32-arm64/-/win32-arm64-0.17.15.tgz#1f95b2564193c8d1fee8f8129a0609728171d500"
+  integrity sha512-W+Z5F++wgKAleDABemiyXVnzXgvRFs+GVKThSI+mGgleLWluv0D7Diz4oQpgdpNzh4i2nNDzQtWbjJiqutRp6Q==
+
+"@esbuild/win32-ia32@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/win32-ia32/-/win32-ia32-0.17.15.tgz#c362b88b3df21916ed7bcf75c6d09c6bf3ae354a"
+  integrity sha512-Muz/+uGgheShKGqSVS1KsHtCyEzcdOn/W/Xbh6H91Etm+wiIfwZaBn1W58MeGtfI8WA961YMHFYTthBdQs4t+w==
+
+"@esbuild/win32-x64@0.17.15":
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.17.15.tgz#c2e737f3a201ebff8e2ac2b8e9f246b397ad19b8"
+  integrity sha512-DjDa9ywLUUmjhV2Y9wUTIF+1XsmuFGvZoCmOWkli1XcNAh5t25cc7fgsCx4Zi/Uurep3TTLyDiKATgGEg61pkA==
 
 "@eslint-community/eslint-utils@^4.2.0":
   version "4.4.0"
@@ -706,17 +816,17 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
-"@latticexyz/cli@2.0.0-alpha.51":
-  version "2.0.0-alpha.51"
-  resolved "https://registry.yarnpkg.com/@latticexyz/cli/-/cli-2.0.0-alpha.51.tgz#a2827141add0f51c69f644b0ef8d8d0c0ea8e5fa"
-  integrity sha512-MoIXkKp4ykbjPhtyWgC9XZkHcCFFtfiAcwO8Z+oP5rdcdrp68B2w87+hgfpJwBdQcfPruSarnwPoyoE15QPVHQ==
+"@latticexyz/cli@2.0.0-alpha.64":
+  version "2.0.0-alpha.64"
+  resolved "https://registry.yarnpkg.com/@latticexyz/cli/-/cli-2.0.0-alpha.64.tgz#e4037e6ed70f45ff9d6269f7f396701ac65c07d9"
+  integrity sha512-257/w2Dx5DHn71ilkPp35yQ7H6LqbiA3qvcC62uQvhN+4qxtu3UEuT3jbE07GGPPrFsnxsm5a3K9Ju8hGYpliQ==
   dependencies:
     "@improbable-eng/grpc-web" "^0.15.0"
     "@improbable-eng/grpc-web-node-http-transport" "^0.15.0"
-    "@latticexyz/schema-type" "^2.0.0-alpha.51+4de4b6d5"
-    "@latticexyz/services" "^2.0.0-alpha.51+4de4b6d5"
-    "@latticexyz/solecs" "^2.0.0-alpha.51+4de4b6d5"
-    "@latticexyz/std-contracts" "^2.0.0-alpha.51+4de4b6d5"
+    "@latticexyz/schema-type" "^2.0.0-alpha.64+3a91292d"
+    "@latticexyz/services" "^2.0.0-alpha.64+3a91292d"
+    "@latticexyz/solecs" "^2.0.0-alpha.64+3a91292d"
+    "@latticexyz/std-contracts" "^2.0.0-alpha.64+3a91292d"
     "@solidity-parser/parser" "^0.16.0"
     "@typechain/ethers-v5" "^10.1.1"
     chalk "^5.0.1"
@@ -724,6 +834,7 @@
     dotenv "^16.0.3"
     ds-test "https://github.com/dapphub/ds-test.git#c9ce3f25bde29fc5eb9901842bf02850dfd2d084"
     ejs "^3.1.8"
+    esbuild "^0.17.14"
     ethers "^5.7.2"
     execa "^7.0.0"
     find-up "^6.3.0"
@@ -743,95 +854,71 @@
     zod "^3.21.4"
     zod-validation-error "^1.0.1"
 
-"@latticexyz/network@2.0.0-alpha.51":
-  version "2.0.0-alpha.51"
-  resolved "https://registry.yarnpkg.com/@latticexyz/network/-/network-2.0.0-alpha.51.tgz#91dd0fdbf759cfe156d86477622c8ca56288bdb9"
-  integrity sha512-vdMnPPgXGI877VzKH05KDE7gINskgQe8bPEvk5Qz4lEXnlGgLmK+20u4KA3dCu3P0FQkL70oSQUxAhC7Uz+7Qw==
+"@latticexyz/network@2.0.0-alpha.64":
+  version "2.0.0-alpha.64"
+  resolved "https://registry.yarnpkg.com/@latticexyz/network/-/network-2.0.0-alpha.64.tgz#405dc392b555d5fdb2feac16632e5ec5a6459110"
+  integrity sha512-aucn0sx0fxSYf0lFZAmHZyDlZKQAXf0vltd/ImhncREf2bqXPdV8QWNqavAnmq2U6Yn2r8yCJND2J4fd/aPpFQ==
   dependencies:
     debug "^4.3.4"
     lodash "^4.17.21"
 
-"@latticexyz/react@2.0.0-alpha.51":
-  version "2.0.0-alpha.51"
-  resolved "https://registry.yarnpkg.com/@latticexyz/react/-/react-2.0.0-alpha.51.tgz#bb12d44202a4c11e1f5b3fc801a36054fed12748"
-  integrity sha512-fXwh1aZxQgLyftDLtTkCq+pbYyQMigksm6ENxfNGlFpHfvwQM5AAU4feMGJXGgbGAGkH8VqI2j80yz+yXb2Mtw==
+"@latticexyz/react@2.0.0-alpha.64":
+  version "2.0.0-alpha.64"
+  resolved "https://registry.yarnpkg.com/@latticexyz/react/-/react-2.0.0-alpha.64.tgz#18d79ddffc47993b3769fe4924a49c618dc291e4"
+  integrity sha512-oYx4TyeH0Vf2osL7cQEc6hWo9s+oHD2+83eDBYdiYrrw2AVDAyaT9dna0NmLiHzjW62IpeBixbaExke7/hGDcg==
   dependencies:
     fast-deep-equal "^3.1.3"
 
-"@latticexyz/recs@2.0.0-alpha.51":
-  version "2.0.0-alpha.51"
-  resolved "https://registry.yarnpkg.com/@latticexyz/recs/-/recs-2.0.0-alpha.51.tgz#3c22bc346a0f686532c63c287394101631f8bf22"
-  integrity sha512-x5sMI3cUrwallRbja0wrMinEXBojYzWa58w/kuBh0oPkPOAgf+MjjLB5/qJEgVfepQ3fTJxyCxiGcPeZWDwB9A==
+"@latticexyz/recs@2.0.0-alpha.64":
+  version "2.0.0-alpha.64"
+  resolved "https://registry.yarnpkg.com/@latticexyz/recs/-/recs-2.0.0-alpha.64.tgz#a211135f6476fdc581389720cc1f17c64e9dae02"
+  integrity sha512-94rhz6OIFayNnNfPByssLQK9J0duBHmSq2sWzCAW+disYZORzQ4YvRqj9nrNzrSM36cPmgz8JOrYZQ4rC4awmw==
 
-"@latticexyz/schema-type@2.0.0-alpha.51":
-  version "2.0.0-alpha.51"
-  resolved "https://registry.yarnpkg.com/@latticexyz/schema-type/-/schema-type-2.0.0-alpha.51.tgz#d514ad434454b48038451c089172d314747aeb97"
-  integrity sha512-0SlGqrUSSrREdqb9QU2D8DrT/lK63Zu2KMy0OZk49qyjp1Gc2qIkgPipykO0cv+qWT6THxfy/wDLtchSfuhtbg==
+"@latticexyz/schema-type@2.0.0-alpha.64", "@latticexyz/schema-type@^2.0.0-alpha.64+3a91292d":
+  version "2.0.0-alpha.64"
+  resolved "https://registry.yarnpkg.com/@latticexyz/schema-type/-/schema-type-2.0.0-alpha.64.tgz#21a58b164285c471e1a0f71963d7833da85d5e0a"
+  integrity sha512-OfANiSzL3XXyX9QvGql0vOF6M45km6ddkzLiTEHHgf2/FJckEyrcAwVDgEoSXlRAwAUfQ1KliLzyBVb6WOj9VA==
 
-"@latticexyz/schema-type@^2.0.0-alpha.51+4de4b6d5":
-  version "2.0.0-alpha.52"
-  resolved "https://registry.yarnpkg.com/@latticexyz/schema-type/-/schema-type-2.0.0-alpha.52.tgz#c8b1b795e3c7300e83e8f6444765c5280c9b5342"
-  integrity sha512-DHb8k5aeS6zahTnuZa9VPIQH7Ahrb9y2xHdl3/ZGOCJdzo523z3YaIwM6nCAzpNOqakBIGDAolZ619pIO+R1ZQ==
-
-"@latticexyz/services@2.0.0-alpha.51":
-  version "2.0.0-alpha.51"
-  resolved "https://registry.yarnpkg.com/@latticexyz/services/-/services-2.0.0-alpha.51.tgz#0808f31465e9189fdf7fb6c9c1c97c957be0879d"
-  integrity sha512-SMackwL+eJVP+ErgZV8mAh7lJQ4HL1s3thBOlLvQizsq8Rh47VjaebERP/cZhOvEk1kwK5PrGapaOc0vQceQmw==
+"@latticexyz/services@2.0.0-alpha.64", "@latticexyz/services@^2.0.0-alpha.64+3a91292d":
+  version "2.0.0-alpha.64"
+  resolved "https://registry.yarnpkg.com/@latticexyz/services/-/services-2.0.0-alpha.64.tgz#50e5a4a01eb128db4e4297187e1b4e49465b5910"
+  integrity sha512-lJDLof3HCh7kWYfExUfMGMLOSvkGpCaI0mzOw+x88FDepR7upkXRYerczHgZ0h2cC0cW3pl6i0UGMfvD7F+PHA==
   dependencies:
     long "^5.2.1"
     nice-grpc-common "^2.0.0"
     protobufjs "^7.1.2"
 
-"@latticexyz/services@^2.0.0-alpha.51+4de4b6d5":
-  version "2.0.0-alpha.52"
-  resolved "https://registry.yarnpkg.com/@latticexyz/services/-/services-2.0.0-alpha.52.tgz#013847e44f4a63a313732bb58d0a95827e325114"
-  integrity sha512-C5GmzhFxYaWvzP9GXTBV2ahvaEDCda3ZZVMbVQDBxea7uSIGbH3oUwfXwwovUBQnp7gvOeSCPQN6g7ooQgO65Q==
-  dependencies:
-    long "^5.2.1"
-    nice-grpc-common "^2.0.0"
-    protobufjs "^7.1.2"
+"@latticexyz/solecs@2.0.0-alpha.64", "@latticexyz/solecs@^2.0.0-alpha.64+3a91292d":
+  version "2.0.0-alpha.64"
+  resolved "https://registry.yarnpkg.com/@latticexyz/solecs/-/solecs-2.0.0-alpha.64.tgz#a245f2270de62af6a1fff673e3bfacecb13a8bc4"
+  integrity sha512-1hY6sMj+76s20j1ubLz5EIZbfeogmqurfH08tPvT+IRiDsGBE79R6fL2iTIAKMZfyGGyBHx26GsT220J5awI7A==
 
-"@latticexyz/solecs@2.0.0-alpha.51":
-  version "2.0.0-alpha.51"
-  resolved "https://registry.yarnpkg.com/@latticexyz/solecs/-/solecs-2.0.0-alpha.51.tgz#e1f1b7f186525dbc01922fde02594346477fd30a"
-  integrity sha512-OKt08h5X0f3tjeoh/66wCib/9E0fw5l2fBEycSiY9N31PTESS3O0SsRUgxM5W6NAIWmMg1Y9qm0TAg2Rbwn5HA==
+"@latticexyz/std-client@2.0.0-alpha.64":
+  version "2.0.0-alpha.64"
+  resolved "https://registry.yarnpkg.com/@latticexyz/std-client/-/std-client-2.0.0-alpha.64.tgz#a61989e79b2069d7bf2753909b355eef2d95bd62"
+  integrity sha512-WqJ/YK7ykJTSgh6Y2xJsqFaEiVY0k1oCuN560Rfdq4ZsKPkI1o8ixieKur2xzSfpSZjWhE+1gpwCNn2TNAmaWA==
 
-"@latticexyz/solecs@^2.0.0-alpha.51+4de4b6d5":
-  version "2.0.0-alpha.52"
-  resolved "https://registry.yarnpkg.com/@latticexyz/solecs/-/solecs-2.0.0-alpha.52.tgz#85841085ee90a7d7f15a694a04684531fdb535e2"
-  integrity sha512-a0O0EpFzIxddz7PvWwWeE2G44QRBB+rFd4H3R7Y6lZySk8qyjwE8y9aGmQ03bLOUw7LYfyJZcMgwLTuwn2tZAA==
+"@latticexyz/std-contracts@2.0.0-alpha.64", "@latticexyz/std-contracts@^2.0.0-alpha.64+3a91292d":
+  version "2.0.0-alpha.64"
+  resolved "https://registry.yarnpkg.com/@latticexyz/std-contracts/-/std-contracts-2.0.0-alpha.64.tgz#9e03752baf29eabd9072d478aa19f77ec83be75f"
+  integrity sha512-u8sTchj7l6YbWqOvT2sQUnORVRgZon6uL1L6i0Pi9mhcWVVci3vLr8IdpEjTvY4GteF3m/hgKilf7EvD3s7bJg==
 
-"@latticexyz/std-client@2.0.0-alpha.51":
-  version "2.0.0-alpha.51"
-  resolved "https://registry.yarnpkg.com/@latticexyz/std-client/-/std-client-2.0.0-alpha.51.tgz#76966c1eb963160a387569fdad42a7ec1d9930e9"
-  integrity sha512-YU/jrDvNYHj8b3uu21OjLoaJHuw/5nrFFB23VYvJS64yaaVWKhbMZbeV4tIp0JJImbKAgvrue9nr/bipRu4S0g==
+"@latticexyz/store@2.0.0-alpha.64":
+  version "2.0.0-alpha.64"
+  resolved "https://registry.yarnpkg.com/@latticexyz/store/-/store-2.0.0-alpha.64.tgz#6ad63d4894fd52891e64f620fbfae573f45ed228"
+  integrity sha512-dhBqb1dJFMK5SljK8OAEyr4BRBeeFue8pG+qDy2VMJv0G+O9cJC1grqkyfNytLLoAo0XUFAJ8xw6tm9iNEKgeg==
 
-"@latticexyz/std-contracts@2.0.0-alpha.51":
-  version "2.0.0-alpha.51"
-  resolved "https://registry.yarnpkg.com/@latticexyz/std-contracts/-/std-contracts-2.0.0-alpha.51.tgz#c856cc74e60d38f7f7e678e5228f00bac7a59e5e"
-  integrity sha512-y2VCXRUJlv/DK6wun9oNQ04lXM0mKmpNpOOT18ozq//DEEa83VxD7ns5eLUUa7zsWrqEnf5nbyap3wny0GPDpQ==
-
-"@latticexyz/std-contracts@^2.0.0-alpha.51+4de4b6d5":
-  version "2.0.0-alpha.52"
-  resolved "https://registry.yarnpkg.com/@latticexyz/std-contracts/-/std-contracts-2.0.0-alpha.52.tgz#5009096b4dc433e79c133d4d26c22a0523b19c8b"
-  integrity sha512-KrRwSbG3+7vjdja156GaJtoMORlTV08fQLmOHL03P+cKrKUMGmDmoU9eZk1kkMcYTHlOVMwLdB0kiBzsZaNXeQ==
-
-"@latticexyz/store@2.0.0-alpha.51":
-  version "2.0.0-alpha.51"
-  resolved "https://registry.yarnpkg.com/@latticexyz/store/-/store-2.0.0-alpha.51.tgz#5c671b3605853832ff99ddacd645a0dc4541afc9"
-  integrity sha512-AtS7w8/KMmcppw6mSFg4wYkg+BR+abmuKVuZfJlmY1KEAK5ok1Ut9xH1El0h4uBpnEOpafVTO7L+z1bQKsZ3dw==
-
-"@latticexyz/utils@2.0.0-alpha.51":
-  version "2.0.0-alpha.51"
-  resolved "https://registry.yarnpkg.com/@latticexyz/utils/-/utils-2.0.0-alpha.51.tgz#e8c0fe7700ae10f2ab001c2e13067641f3ac4365"
-  integrity sha512-WqYFq/e7NfFdRmAxEs8xqWx2XF3aPXisq0XIG2QHB1Bx2n14XrNL+fZgtOc9+s5QJN4wDtDysk372IyoTLSoPw==
+"@latticexyz/utils@2.0.0-alpha.64":
+  version "2.0.0-alpha.64"
+  resolved "https://registry.yarnpkg.com/@latticexyz/utils/-/utils-2.0.0-alpha.64.tgz#4373e7c5ca305e75068a83c64a7fa1f74f6810f3"
+  integrity sha512-fADHMxCJR6+8q2zkAN6vn1o2aMPxiyscu2HLSqfLYDc/dhfODFi0KeAzS6/6bKfDWZ8Yi0QpbXIbyGmMKtS4YA==
   dependencies:
     typedoc-plugin-markdown "^3.13.6"
 
-"@latticexyz/world@2.0.0-alpha.51":
-  version "2.0.0-alpha.51"
-  resolved "https://registry.yarnpkg.com/@latticexyz/world/-/world-2.0.0-alpha.51.tgz#142efdc4ffd64a87a4f964f06b9eb09730b76b90"
-  integrity sha512-jA/Eu0aKhznIfXqbgzTZZsEpKL2Kl3KuO1XFlxtKRMT7P0YEd5ZsEeHI0yudK9v8tOEVJnaAyG+7U16PhqodvA==
+"@latticexyz/world@2.0.0-alpha.64":
+  version "2.0.0-alpha.64"
+  resolved "https://registry.yarnpkg.com/@latticexyz/world/-/world-2.0.0-alpha.64.tgz#8997e6c0ead681fe8502bb0a821fd0e6b5afd5d4"
+  integrity sha512-hZj8fXe08ae3MtWxYthKybwa8z9XL4jsnEnGs5YfEPSlpAL25mar9mg/nrUUFEWnH3GKeYa5ssc0uyMJCnimmQ==
 
 "@morgan-stanley/ts-mocking-bird@^0.6.2":
   version "0.6.4"
@@ -2002,6 +2089,34 @@ esbuild@^0.15.9:
     esbuild-windows-32 "0.15.18"
     esbuild-windows-64 "0.15.18"
     esbuild-windows-arm64 "0.15.18"
+
+esbuild@^0.17.14:
+  version "0.17.15"
+  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.17.15.tgz#209ebc87cb671ffb79574db93494b10ffaf43cbc"
+  integrity sha512-LBUV2VsUIc/iD9ME75qhT4aJj0r75abCVS0jakhFzOtR7TQsqQA5w0tZ+KTKnwl3kXE0MhskNdHDh/I5aCR1Zw==
+  optionalDependencies:
+    "@esbuild/android-arm" "0.17.15"
+    "@esbuild/android-arm64" "0.17.15"
+    "@esbuild/android-x64" "0.17.15"
+    "@esbuild/darwin-arm64" "0.17.15"
+    "@esbuild/darwin-x64" "0.17.15"
+    "@esbuild/freebsd-arm64" "0.17.15"
+    "@esbuild/freebsd-x64" "0.17.15"
+    "@esbuild/linux-arm" "0.17.15"
+    "@esbuild/linux-arm64" "0.17.15"
+    "@esbuild/linux-ia32" "0.17.15"
+    "@esbuild/linux-loong64" "0.17.15"
+    "@esbuild/linux-mips64el" "0.17.15"
+    "@esbuild/linux-ppc64" "0.17.15"
+    "@esbuild/linux-riscv64" "0.17.15"
+    "@esbuild/linux-s390x" "0.17.15"
+    "@esbuild/linux-x64" "0.17.15"
+    "@esbuild/netbsd-x64" "0.17.15"
+    "@esbuild/openbsd-x64" "0.17.15"
+    "@esbuild/sunos-x64" "0.17.15"
+    "@esbuild/win32-arm64" "0.17.15"
+    "@esbuild/win32-ia32" "0.17.15"
+    "@esbuild/win32-x64" "0.17.15"
 
 escalade@^3.1.1:
   version "3.1.1"

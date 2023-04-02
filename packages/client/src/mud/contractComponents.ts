@@ -10,7 +10,7 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          open: RecsType.Number,
+          open: RecsType.BigInt,
         },
         {
           metadata: {
@@ -25,7 +25,8 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          held: RecsType.Number,
+          balance: RecsType.BigInt,
+          escrow: RecsType.BigInt,
         },
         {
           metadata: {
@@ -40,11 +41,14 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
-          deltaX: RecsType.Number,
-          deltaY: RecsType.Number,
-          resolved: RecsType.Number,
-          wager: RecsType.Number,
-          odds: RecsType.Number,
+          player: RecsType.String,
+          deltaX: RecsType.BigInt,
+          deltaY: RecsType.BigInt,
+          result: RecsType.BigInt,
+          resolution: RecsType.Number,
+          wager: RecsType.BigInt,
+          payout: RecsType.BigInt,
+          odds: RecsType.BigInt,
           wentUp: RecsType.T,
         },
         {

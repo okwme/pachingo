@@ -6,7 +6,7 @@ import { sound } from '@pixi/sound';
 export default class Graph extends PIXI.Container {
   constructor(noColumns, rowGap, columnGap, nodeRadius = 20, color = 0xffffff) {
     super()
-    
+
 
     this.noColumns = noColumns
     this.rowGap = rowGap
@@ -59,7 +59,7 @@ export default class Graph extends PIXI.Container {
       if (this.currentlySelectedNode.row == selectedNode.row && this.currentlySelectedNode.column == selectedNode.column) {
         this.currentlySelectedNode = null
         return
-      } 
+      }
       this.currentlySelectedNode = null
     }
 

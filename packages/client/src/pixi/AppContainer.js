@@ -53,7 +53,10 @@ export default class AppContainer extends PIXI.Container {
   }
 
   async advanceState(deltaX, deltaY, wentUp, hasWon) {
+    if (this._isStateChanging) return
+    this._isStateChanging = true
     await this.graph.setWinningPath(deltaX, deltaY, wentUp)
+    this._isStateChanging = false
   }
 
   tick() {

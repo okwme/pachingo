@@ -182,7 +182,7 @@ export default class GraphNode extends PIXI.Container {
       .easing(TWEEN.Easing.Cubic.InOut)
       .delay(delayValue * 1000)
       .onUpdate(() => { 
-        console.log(this.colorRGB)
+        // console.log(this.colorRGB)
         this.color = PIXI.utils.rgb2hex([this.colorRGB.r, this.colorRGB.g, this.colorRGB.b])
         this.drawNodeGraphics()
         if (shouldColorEdge) {

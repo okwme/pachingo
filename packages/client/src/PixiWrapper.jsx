@@ -9,8 +9,13 @@ import BodyPart from "./pixi/assets/BodyPart.png"
 import HeadTop from "./pixi/assets/HeadTop.png"
 import HeadJaw from "./pixi/assets/HeadJaw.png"
 import HeadTentacles from "./pixi/assets/HeadTentacles.png"
-import MainLoop from "./pixi/assets/MainLoop.wav"
+import MainLoopSound from "./pixi/assets/bakground_ambience_for_gameplay_final.mp3"
+import WinSound from "./pixi/assets/win_pop_up_sound_final.wav"
+import BetSound from "./pixi/assets/place_bed_sound_final.wav"
 import { sound } from '@pixi/sound';
+
+if (!window.PACHINGO) window.PACHINGO = {}
+window.PACHINGO.sound = sound
 
 export default class PixiWrapper extends React.Component {
   constructor(props) {
@@ -23,10 +28,11 @@ export default class PixiWrapper extends React.Component {
     appHeight: window.innerHeight
   }
 
-  onKeyDown = (e) => { 
+  onKeyDown = async (e) => { 
     console.log(e.key)
     if (e.key == "w") {
-      this._pAppContainer.setStateWon(4, 1, 0, 1, 100, [false, true, true, false, true])
+      await this._pAppContainer.setStateWon(4, 1, 0, 1, 100, [false, true, true, false, true])
+      window.PACHINGO.onWin()
     }
   }
   onKeyUp = (e) => { }
@@ -71,8 +77,11 @@ export default class PixiWrapper extends React.Component {
       console.error("Caught exception in loading assets", e)
     }
 
-    sound.add("MainLoop", MainLoop)
-    sound.play("MainLoop", { loop: true, volume: 0.15 })
+    sound.add("MainLoop", MainLoopSound)
+    sound.add("WinSound", WinSound)
+    sound.add("BetSound", BetSound)
+    sound.play("MainLoop", { loop: true, volume: 0.6 })
+
     await this.startApp()
   }
 
@@ -86,7 +95,7 @@ export default class PixiWrapper extends React.Component {
         loader.add("HeadTop", HeadTop)
         loader.add("HeadJaw", HeadJaw)
         loader.add("HeadTentacles", HeadTentacles)
-        loader.add("MainLoop", MainLoop)
+        loader.add("MainLoop", MainLoopSound)
         loader.onComplete.add(() => { res() })
         loader.load()
       } catch (e) {
@@ -108,7 +117,7 @@ export default class PixiWrapper extends React.Component {
     })    
   }
 
-  componentDidUpdate(oldProps) {
+  async componentDidUpdate(oldProps) {
     if (this._pAppContainer)
       this._pAppContainer.setSelectedNode(this.props.selectedNode)
 
@@ -124,7 +133,9 @@ export default class PixiWrapper extends React.Component {
         // Unresolved
         this._pAppContainer.setStatePending(deltaX, deltaY, odds, resolved, wager, wentUp)
       } else if (resolved == 1) {
-        this._pAppContainer.setStateWon(deltaX, deltaY, odds, resolved, wager, wentUp)
+        await this._pAppContainer.setStateWon(deltaX, deltaY, odds, resolved, wager, wentUp)
+        // window.PACHINGO.setIsWonActive(true)
+        window.PACHINGO.onWin()
         // Won
       } else if (resolved == 2) {
         this._pAppContainer.setStateLost(deltaX, deltaY, odds, resolved, wager, wentUp)

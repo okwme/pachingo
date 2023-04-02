@@ -38,16 +38,16 @@ export default class AppContainer extends PIXI.Container {
 
   }
 
-  setStateWon(deltaX, deltaY, odds, resolved, wager, wentUp) {
-    this.advanceState(deltaX, deltaY, wentUp)
+  async setStateWon(deltaX, deltaY, odds, resolved, wager, wentUp) {
+    await this.advanceState(deltaX, deltaY, wentUp)
   }
 
-  setStateLost(deltaX, deltaY, odds, resolved, wager, wentUp) {
+  async setStateLost(deltaX, deltaY, odds, resolved, wager, wentUp) {
 
   }
 
-  advanceState(deltaX, deltaY, wentUp, hasWon) {
-    this.graph.setWinningPath(deltaX, deltaY, wentUp)
+  async advanceState(deltaX, deltaY, wentUp, hasWon) {
+    await this.graph.setWinningPath(deltaX, deltaY, wentUp)
   }
 
   tick() {

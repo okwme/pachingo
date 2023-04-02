@@ -1,8 +1,10 @@
 import * as PIXI from 'pixi.js'
 import { getProbabilityForCoordinates } from '../constants'
-import { noise2D, noise3D } from 'canvas-sketch-util/random'
+import random, { noise2D, noise3D } from 'canvas-sketch-util/random'
 import * as TWEEN from '@tweenjs/tween.js'
 import { pifyTween } from './pixiUtils'
+import { sound } from '@pixi/sound';
+import delay from "delay"
 
 export default class GraphNode extends PIXI.Container {
   constructor(noColumns, noRows, column, row, columnGap, rowGap, radius, color = 0xffffff) {
@@ -101,25 +103,36 @@ export default class GraphNode extends PIXI.Container {
     this.bottomEdgeGraphics.lineTo(this.columnGap, +this.rowGap / 2)
   }
 
-  drawSelectedGraphics() {
+  async drawSelectedGraphics() {
     this.selectedGraphics.clear()
-    this.selectedGraphics.beginFill(0xff0000)
+    //this.selectedGraphics.beginFill(0xff0000)
+    this.selectedGraphics.lineStyle(1, 0xff0000, 1)
 
     let polygon = []
 
-    const yOffset = -25
+    const yOffset = 0
 
-    let r = this.radius * 0.5
-    const now = (new Date()).getTime()
-    for (let angle = 0; angle <= 2 * Math.PI + Math.PI / 16; angle += Math.PI / 32) {
-      let x = r * Math.cos(angle)
-      let y = r * Math.sin(angle)
+    for (let angle = 0; angle <= 2 * Math.PI + Math.PI / 16; angle += Math.PI / 16) {
 
-      polygon.push(x + noise3D(x + 10 * this.column, y + 10 * this.row, now / 10, 0.04, 1))
-      polygon.push(y + yOffset + noise3D(x + 10 * this.column, y + 10 * this.row, now / 10, 0.022, 5))
+      let dX = Math.cos(angle) * this.radius
+      let dY = Math.sin(angle) * this.radius
+
+      let r = this.radius * 0.15
+      const now = (new Date()).getTime()
+      // for (let angle = 0; angle <= 2 * Math.PI + Math.PI / 16; angle += Math.PI / 32) {
+      //   let x = r * Math.cos(angle) + dX
+      //   let y = r * Math.sin(angle) + dY
+  
+      //   polygon.push(x + noise3D(x + 10 * this.column, y + 10 * this.row, now / 10, 0.04, 1))
+      //   polygon.push(y + yOffset + noise3D(x + 10 * this.column, y + 10 * this.row, now / 10, 0.022, 5))
+      // }
+  
+      // this.selectedGraphics.drawPolygon(polygon)
+      this.selectedGraphics.drawCircle(dX, dY, r)
+
+      await delay(40)
     }
 
-    this.selectedGraphics.drawPolygon(polygon)
   }
 
   async transitionIn(duration) {
@@ -131,7 +144,10 @@ export default class GraphNode extends PIXI.Container {
   }
 
   setSelected(isSelected) {
-    if (isSelected) this.selectedGraphics.alpha = 1
+    if (isSelected) {
+      this.drawSelectedGraphics()
+      this.selectedGraphics.alpha = 1
+    }
     else this.selectedGraphics.alpha = 0
   }
 
@@ -188,6 +204,7 @@ export default class GraphNode extends PIXI.Container {
     let selection = { row: this.row, column: this.column, probability: getProbabilityForCoordinates(this.column, this.row) }
     console.log("Sel: ", selection)
     window.PACHINGO.setSelectedNode(selection)
+    sound.play("BetSound")
   }
 
   tick() {

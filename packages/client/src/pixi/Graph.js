@@ -104,7 +104,8 @@ export default class Graph extends PIXI.Container {
     let stagger = 0.15
 
     for (let i = 0; i < this.noColumns; i++) {
-      promises.push(this.nodes[column][row].hide(0.5, delayAmt))
+      if (i < this.noColumns - 1)
+        promises.push(this.nodes[column][row].hide(0.5, delayAmt))
       nodesToPurge.push(this.nodes[column][row])
       column++
       row += rowOffset
@@ -131,13 +132,14 @@ export default class Graph extends PIXI.Container {
           this.nodes[column][row].position.y = newPos.y
         }
 
-        await delay(50)
+        if (column < this.noColumns)
+          await delay(50)
       }
     }
 
     nodesToPurge.forEach(n => this.removeChild(n))
 
-    await delay(500)
+    // await delay(500)
   }
 
   onClick = () => {

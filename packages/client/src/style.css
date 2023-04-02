@@ -141,3 +141,52 @@ body {
   text-align: center;
   width: 150px;
 }
+
+.won-overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+  pointer-events: auto;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.won-overlay.inactive {
+  pointer-events: none;
+  opacity: 0;
+}
+
+.content-dialog {
+  background-color: #ffffff;
+  border: 1px solid #AAAEB2;
+  padding: 30px;
+  border-radius: 30px;
+  color: #AAAEB2;
+  width: 350px;
+  font-size: 13pt;
+  line-height: 1.2;
+}
+
+.content-dialog > h1 {
+  color: black;
+  line-height: 1.3;
+  font-size: 14pt;
+  margin-top: 0;
+}
+
+.overlay-button {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 1);
+  border-radius: 25px;
+  color: white;
+  padding: 10px 0;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.overlay-button:hover {
+  background-color: rgba(0, 0, 0, 0.85)
+}

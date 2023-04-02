@@ -5,13 +5,24 @@ import PixiWrapper from "./PixiWrapper.jsx";
 import UIWrapper from "./UIWrapper.jsx"
 import { INTERFACE_STATE } from "./constants.js"
 import { Has } from "@latticexyz/recs";
+import WonOverlay from "./WonOverlay.jsx"
+import WelcomeOverlay from "./WelcomeOverlay.jsx"
 
 // Using a global context to easily pass callbacks around to Pixi... not ideal but it'll do for now.
-window.PACHINGO = {}
+if (!window.PACHINGO) window.PACHINGO = {}
 
 export const App = () => {
 
   const [currentView, setCurrentView] = useState(INTERFACE_STATE.NOW)
+  const [isWonActive, setIsWonActive] = useState(false)
+  window.PACHINGO.onWin = () => {
+    setIsWonActive(true)
+    window.PACHINGO.sound.play("WinSound")
+  }
+  window.PACHINGO.setIsWonActive = setIsWonActive
+
+  const [isWelcomeActive, setIsWelcomeActive] = useState(true)
+  window.PACHINGO.setIsWelcomeActive = setIsWelcomeActive
 
   const {
     components: { Bank, BetTable, OpenBet },
@@ -76,6 +87,8 @@ export const App = () => {
         setBetAmount={setBetAmount}
         probability={selectedNode.probability}
       />
+      <WonOverlay isWonActive={isWonActive} setIsWonActive={setIsWonActive}/>
+      <WelcomeOverlay isWelcomeActive={isWelcomeActive} setIsWelcomeActive={setIsWelcomeActive}/>
       {/* <div className="full-screen transparent">
         <div>
           Counters: <span>{counter?.value ?? "??"}</span>

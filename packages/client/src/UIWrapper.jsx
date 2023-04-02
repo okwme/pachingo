@@ -14,7 +14,7 @@ export default class UIWrapper extends React.Component {
     this.props.onViewChange(view)
   }
   render() {
-    const { currentView, houseCandy, yourCandy, betAmount, setBetAmount, probability, onBet } = this.props
+    const { currentView, houseCandy, yourCandy, betAmount, setBetAmount, probability, onBet, betDisabled } = this.props
 
     console.log("Probability: ", probability)
 
@@ -64,7 +64,7 @@ export default class UIWrapper extends React.Component {
               </div>
             </div>
 
-            <div className="place-bet-button">
+            <div className={"place-bet-button " + betDisabled && 'disabled'}>
               <div onClick={onBet} className="button-component button-wide">Bet</div>
             </div>
           </div>

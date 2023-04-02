@@ -22,7 +22,7 @@ uint256 constant BankTableId = _tableId;
 
 struct BankData {
   uint256 balance;
-  uint256 held;
+  uint256 escrow;
 }
 
 library Bank {
@@ -45,7 +45,7 @@ library Bank {
   function getMetadata() internal pure returns (string memory, string[] memory) {
     string[] memory _fieldNames = new string[](2);
     _fieldNames[0] = "balance";
-    _fieldNames[1] = "held";
+    _fieldNames[1] = "escrow";
     return ("Bank", _fieldNames);
   }
 
@@ -101,34 +101,34 @@ library Bank {
     _store.setField(_tableId, _primaryKeys, 0, abi.encodePacked((balance)));
   }
 
-  /** Get held */
-  function getHeld() internal view returns (uint256 held) {
+  /** Get escrow */
+  function getEscrow() internal view returns (uint256 escrow) {
     bytes32[] memory _primaryKeys = new bytes32[](0);
 
     bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 1);
     return (uint256(Bytes.slice32(_blob, 0)));
   }
 
-  /** Get held (using the specified store) */
-  function getHeld(IStore _store) internal view returns (uint256 held) {
+  /** Get escrow (using the specified store) */
+  function getEscrow(IStore _store) internal view returns (uint256 escrow) {
     bytes32[] memory _primaryKeys = new bytes32[](0);
 
     bytes memory _blob = _store.getField(_tableId, _primaryKeys, 1);
     return (uint256(Bytes.slice32(_blob, 0)));
   }
 
-  /** Set held */
-  function setHeld(uint256 held) internal {
+  /** Set escrow */
+  function setEscrow(uint256 escrow) internal {
     bytes32[] memory _primaryKeys = new bytes32[](0);
 
-    StoreSwitch.setField(_tableId, _primaryKeys, 1, abi.encodePacked((held)));
+    StoreSwitch.setField(_tableId, _primaryKeys, 1, abi.encodePacked((escrow)));
   }
 
-  /** Set held (using the specified store) */
-  function setHeld(IStore _store, uint256 held) internal {
+  /** Set escrow (using the specified store) */
+  function setEscrow(IStore _store, uint256 escrow) internal {
     bytes32[] memory _primaryKeys = new bytes32[](0);
 
-    _store.setField(_tableId, _primaryKeys, 1, abi.encodePacked((held)));
+    _store.setField(_tableId, _primaryKeys, 1, abi.encodePacked((escrow)));
   }
 
   /** Get the full data */
@@ -148,8 +148,8 @@ library Bank {
   }
 
   /** Set the full data using individual values */
-  function set(uint256 balance, uint256 held) internal {
-    bytes memory _data = encode(balance, held);
+  function set(uint256 balance, uint256 escrow) internal {
+    bytes memory _data = encode(balance, escrow);
 
     bytes32[] memory _primaryKeys = new bytes32[](0);
 
@@ -157,8 +157,8 @@ library Bank {
   }
 
   /** Set the full data using individual values (using the specified store) */
-  function set(IStore _store, uint256 balance, uint256 held) internal {
-    bytes memory _data = encode(balance, held);
+  function set(IStore _store, uint256 balance, uint256 escrow) internal {
+    bytes memory _data = encode(balance, escrow);
 
     bytes32[] memory _primaryKeys = new bytes32[](0);
 
@@ -167,24 +167,24 @@ library Bank {
 
   /** Set the full data using the data struct */
   function set(BankData memory _table) internal {
-    set(_table.balance, _table.held);
+    set(_table.balance, _table.escrow);
   }
 
   /** Set the full data using the data struct (using the specified store) */
   function set(IStore _store, BankData memory _table) internal {
-    set(_store, _table.balance, _table.held);
+    set(_store, _table.balance, _table.escrow);
   }
 
   /** Decode the tightly packed blob using this table's schema */
   function decode(bytes memory _blob) internal pure returns (BankData memory _table) {
     _table.balance = (uint256(Bytes.slice32(_blob, 0)));
 
-    _table.held = (uint256(Bytes.slice32(_blob, 32)));
+    _table.escrow = (uint256(Bytes.slice32(_blob, 32)));
   }
 
   /** Tightly pack full data using this table's schema */
-  function encode(uint256 balance, uint256 held) internal view returns (bytes memory) {
-    return abi.encodePacked(balance, held);
+  function encode(uint256 balance, uint256 escrow) internal view returns (bytes memory) {
+    return abi.encodePacked(balance, escrow);
   }
 
   /* Delete all data for given keys */

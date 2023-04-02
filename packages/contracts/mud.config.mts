@@ -20,7 +20,7 @@ export default mudConfig({
     Bank: {
       schema: {
         balance: "uint256",
-        held: "uint256",
+        escrow: "uint256",
       },
       primaryKeys: {}
     },
@@ -29,10 +29,13 @@ export default mudConfig({
         block: "uint256",
       },
       schema: {
+        player: "address",
         deltaX: "uint256",
         deltaY: "int256",
-        resolved: "BetStatus",
+        result: "int256",
+        resolution: "BetStatus",
         wager: "uint256",
+        payout: "uint256",
         odds: "uint256", // this could be calculated from deltaX and deltaY
         wentUp: "bool[5]", // should be changed if we allow more than 5 steps
       },

@@ -26,7 +26,7 @@ export function defineContractComponents(world: World) {
         world,
         {
           balance: RecsType.BigInt,
-          held: RecsType.BigInt,
+          escrow: RecsType.BigInt,
         },
         {
           metadata: {
@@ -41,10 +41,13 @@ export function defineContractComponents(world: World) {
       return defineComponent(
         world,
         {
+          player: RecsType.String,
           deltaX: RecsType.BigInt,
           deltaY: RecsType.BigInt,
-          resolved: RecsType.Number,
+          result: RecsType.BigInt,
+          resolution: RecsType.Number,
           wager: RecsType.BigInt,
+          payout: RecsType.BigInt,
           odds: RecsType.BigInt,
           wentUp: RecsType.T,
         },

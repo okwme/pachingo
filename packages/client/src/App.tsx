@@ -10,31 +10,30 @@ import { ethers } from "ethers";
 window.PACHINGO = {}
 
 export const App = () => {
-
+  const [initialized, setInitialized] = useState(false)
   let bets = []
 
   const [currentView, setCurrentView] = useState(INTERFACE_STATE.NOW)
-  // const [bankBalance, setBankBalance] = useState(0)
-  // const [bankHeld, setBankHeld] = useState(0)
   const {
     components: { Bank, BetTable, OpenBet },
     // singletonEntity,
     network: { signer, blockNumber },
     worldSend,
+    networkConfig,
     worldContract
   } = useMUD();
 
   // // TODO (cezar): Currently adding mock state variables here. They will eventually come from MUD
   // Bank.update$.subscribe((_bank) => {
   //   setBankBalance(_bank.value[0]?.balance || 0)
-  //   setBankHeld(_bank.value[0]?.held || 0)
+  //   setBankEscrow(_bank.value[0]?.escrow || 0)
 
   //   var currentValue = _bank.value[0]
   //   var previousValue = _bank.value[1]
   //   console.log(`_bank updated`, currentValue, previousValue)
   //   console.log({ _bank })
   //   console.log({ bank })
-  //   console.log({ bankBalance, bankHeld })
+  //   console.log({ bankBalance, bankEscrow })
   // })
 
   // BetTable.update$.subscribe((_betTable) => {
@@ -51,15 +50,24 @@ export const App = () => {
   //   // })
   // })
 
+  const openBet = useEntityQuery([Has(OpenBet)])[0]
+  const maybeOpenBet = useComponentValue(OpenBet, openBet)
+  console.log({ maybeOpenBet })
+
   const bank = useEntityQuery([Has(Bank)])[0];
   const maybeBank = useComponentValue(Bank, bank)
-  const houseCandy = (maybeBank ? maybeBank.balance - maybeBank.held : 0).toString()
+  const houseCandy = (maybeBank ? maybeBank.balance - maybeBank.escrow : 0).toString()
+  const bankBalance = maybeBank ? ethers.utils.formatEther(maybeBank.balance) : "0"
+  console.log({ bankBalance })
+  // console.log(bankBalance || 'no bank balance!!!')
+  // bankBalance && setInitialized(true)
+  const bankEscrow = maybeBank ? ethers.utils.formatEther(maybeBank.escrow) : "0"
+
   // bank.map((entity) => console.log("b",))
 
   const betTable = useEntityQuery([Has(BetTable)]);
   // betTable.map((entity) => useComponentValue(BetTable, entity))
-
-  betTable.map((entity) => getComponentValueStrict(BetTable, entity))
+  const allBets = betTable.map((entity) => getComponentValueStrict(BetTable, entity))
 
   // console.log(`betTable.entries()`, betTable.entries())
 
@@ -67,8 +75,8 @@ export const App = () => {
 
   // const houseCandy = 1320000
 
-  // use ethers to convert bankBalance and bankHeld to ether as houseCandy
-  // var houseCandy = ethers.utils.formatEther(bankBalance - bankHeld)
+  // use ethers to convert bankBalance and bankEscrow to ether as houseCandy
+  // var houseCandy = ethers.utils.formatEther(bankBalance - bankEscrow)
   // console.log({ houseCandy })
 
   const yourCandy = 325
@@ -79,66 +87,83 @@ export const App = () => {
   // shiiiiii  
   window.PACHINGO.setSelectedNode = setSelectedNode
 
-
-
-  const onBet = async () => {
-
-    // let balance = await signer.get()?.getBalance()
-    // console.log({ balance })
-    if (selectedNode.column < 0) return
-
-    const sendTx = await worldSend("sendMoney", [{ value: ethers.utils.parseEther("1.0") }])
-    // const sendTx = await worldContract.sendMoney({ value: ethers.utils.parseEther("0.001") })
-
-    console.log({ sendTx })
-    await sendTx.wait();
-    console.log('testSendMoney done')
-    // const bankTx = await worldSend("testBank", []);
-    // console.log({ bankTx })
-    // await bankTx.wait();
-    // console.log('testBank done')
-
-    // const tx = await worldSend("testStartBet", []);
-    // console.log({ tx })
-    // await tx.wait();
-    // console.log('testStartBet done')
-    // const tx2 = await worldSend("testEndBet", [])
-    // console.log({ tx2 })
-    // await tx2.wait();
-    // console.log('testEndBet done')
-
-    // let value = ethers.utils.parseEther(betAmount.toString())
-    // // make sure contract can make a bet that big
-
-    // // const probability = selectedNode.probability
-    // // const payout = Math.floor(betAmount / probability)
-    // // console.log({ bank })
-    // // if (payout > bank.balance) {
-    // //   alert("Not enough candy in the bank to pay out this bet")
-    // //   return
-    // // }
-    // console.log({ selectedNode })
-    // const { x, y } = getGraphToDeltaXYCoords(selectedNode.column, selectedNode.row)
-    // console.log({ x, y })
-    // const tx = await worldSend("makeBet", [x, y, { value }]);
-    // console.log({ tx })
-    // await tx.wait();
-    // console.log('bet made')
-    // const tx2 = await worldSend("resolveBet", []);
-    // console.log({ tx2 })
-    // await tx2.wait();
-    // console.log('bet resolved')
+  // initialize the world so that it has money and that money is registered in the bank table
+  const initializeWorld = async () => {
+    if (initialized) return
+    setInitialized(true)
+    try {
+      let worldBalance = await worldContract.provider.getBalance(networkConfig.worldAddress)
+      // const getBank = await worldContract.getBank()
+      const howMuchShouldWorldStartWith = "5"
+      const howMuchShouldWorldStartWithWei = ethers.utils.parseEther(howMuchShouldWorldStartWith)
+      if (worldBalance.lt(howMuchShouldWorldStartWithWei)) {
+        let userBalance = await signer.get()?.getBalance()
+        if (userBalance?.lt(howMuchShouldWorldStartWithWei)) {
+          alert("UH OHHH not enough money to send to world contract")
+          setInitialized(false)
+        } else {
+          console.log(`---Depositing ${howMuchShouldWorldStartWith} into Bank`)
+          const sendTx = await worldSend("sendMoney", [{ value: howMuchShouldWorldStartWithWei }])
+          await sendTx.wait();
+          console.log('---Successfully deposited ')
+        }
+      }
+    } catch (error) {
+      console.error({ error })
+      setInitialized(false)
+    }
   }
 
+  const onBet = async () => {
+    // can't bet on first node
+    if (selectedNode.column < 0) return
+
+    let balance = await signer.get()?.getBalance()
+    let betAmountInWei = ethers.utils.parseEther(betAmount.toString())
+
+    // make sure player has enough money
+    // TODO: make sure this is being done with form validation instead
+    if (balance?.lt(betAmountInWei)) {
+      alert("Not enough money to make this bet")
+      return
+    }
+
+    const probability = selectedNode.probability
+
+    // make sure contract can make a bet that big
+    // TODO: make sure this is being done with form validation instead
+    const locallyCalculatedPayout = (((betAmount) / probability) - betAmount)
+    let payoutInWei = ethers.utils.parseEther(locallyCalculatedPayout.toString())
+
+    if (payoutInWei.gt(ethers.utils.parseEther(bankBalance))) {
+      alert("Not enough candy in the bank to pay out this bet")
+      return
+    }
+
+    const { x, y } = getGraphToDeltaXYCoords(selectedNode.column, selectedNode.row)
+
+    console.log(`---making bet`)
+    console.log(`---deltaX = ${x} and deltaY = ${y}`)
+    console.log(`---wager = ${betAmount} Candies`)
+    console.log(`---odds = ${probability}`)
+    console.log(`---payout of ${locallyCalculatedPayout.toString()} Candies`)
+
+    const tx = await worldSend("makeBet", [x, y, { value: betAmountInWei }]);
+    await tx.wait();
+    console.log('---bet made')
+
+    const tx2 = await worldSend("resolveBet", []);
+    await tx2.wait();
+    console.log('---bet resolved')
+  }
 
   const onViewChange = (newView: any) => {
     setCurrentView(newView)
   }
-  // console.log('HAVE BANK', { houseCandy }, { bankBalance }, { bankHeld })
 
   return (
     <>
-      <PixiWrapper selectedNode={selectedNode} />
+      <PixiWrapper selectedNode={selectedNode} allBets={allBets} />
       <UIWrapper
         currentView={currentView}
         onViewChange={onViewChange}
@@ -148,7 +173,9 @@ export const App = () => {
         setBetAmount={setBetAmount}
         probability={selectedNode.probability}
         onBet={onBet}
+        betDisabled={selectedNode.column < 0}
       />
+      {!initialized || !bankBalance && <div style={{ zIndex: "999", position: "fixed", top: 0, left: 0 }} onClick={initializeWorld}>initializeWorld</div>}
     </>
   );
 };

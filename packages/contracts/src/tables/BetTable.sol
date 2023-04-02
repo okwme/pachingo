@@ -24,10 +24,13 @@ uint256 constant _tableId = uint256(bytes32(abi.encodePacked(bytes16(""), bytes1
 uint256 constant BetTableTableId = _tableId;
 
 struct BetTableData {
+  address player;
   uint256 deltaX;
   int256 deltaY;
-  BetStatus resolved;
+  int256 result;
+  BetStatus resolution;
   uint256 wager;
+  uint256 payout;
   uint256 odds;
   bool[5] wentUp;
 }
@@ -35,13 +38,16 @@ struct BetTableData {
 library BetTable {
   /** Get the table's schema */
   function getSchema() internal pure returns (Schema) {
-    SchemaType[] memory _schema = new SchemaType[](6);
-    _schema[0] = SchemaType.UINT256;
-    _schema[1] = SchemaType.INT256;
-    _schema[2] = SchemaType.UINT8;
-    _schema[3] = SchemaType.UINT256;
-    _schema[4] = SchemaType.UINT256;
-    _schema[5] = SchemaType.BOOL_ARRAY;
+    SchemaType[] memory _schema = new SchemaType[](9);
+    _schema[0] = SchemaType.ADDRESS;
+    _schema[1] = SchemaType.UINT256;
+    _schema[2] = SchemaType.INT256;
+    _schema[3] = SchemaType.INT256;
+    _schema[4] = SchemaType.UINT8;
+    _schema[5] = SchemaType.UINT256;
+    _schema[6] = SchemaType.UINT256;
+    _schema[7] = SchemaType.UINT256;
+    _schema[8] = SchemaType.BOOL_ARRAY;
 
     return SchemaLib.encode(_schema);
   }
@@ -55,13 +61,16 @@ library BetTable {
 
   /** Get the table's metadata */
   function getMetadata() internal pure returns (string memory, string[] memory) {
-    string[] memory _fieldNames = new string[](6);
-    _fieldNames[0] = "deltaX";
-    _fieldNames[1] = "deltaY";
-    _fieldNames[2] = "resolved";
-    _fieldNames[3] = "wager";
-    _fieldNames[4] = "odds";
-    _fieldNames[5] = "wentUp";
+    string[] memory _fieldNames = new string[](9);
+    _fieldNames[0] = "player";
+    _fieldNames[1] = "deltaX";
+    _fieldNames[2] = "deltaY";
+    _fieldNames[3] = "result";
+    _fieldNames[4] = "resolution";
+    _fieldNames[5] = "wager";
+    _fieldNames[6] = "payout";
+    _fieldNames[7] = "odds";
+    _fieldNames[8] = "wentUp";
     return ("BetTable", _fieldNames);
   }
 
@@ -87,12 +96,46 @@ library BetTable {
     _store.setMetadata(_tableId, _tableName, _fieldNames);
   }
 
+  /** Get player */
+  function getPlayer(uint256 block) internal view returns (address player) {
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32(uint256((block)));
+
+    bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 0);
+    return (address(Bytes.slice20(_blob, 0)));
+  }
+
+  /** Get player (using the specified store) */
+  function getPlayer(IStore _store, uint256 block) internal view returns (address player) {
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32(uint256((block)));
+
+    bytes memory _blob = _store.getField(_tableId, _primaryKeys, 0);
+    return (address(Bytes.slice20(_blob, 0)));
+  }
+
+  /** Set player */
+  function setPlayer(uint256 block, address player) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32(uint256((block)));
+
+    StoreSwitch.setField(_tableId, _primaryKeys, 0, abi.encodePacked((player)));
+  }
+
+  /** Set player (using the specified store) */
+  function setPlayer(IStore _store, uint256 block, address player) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32(uint256((block)));
+
+    _store.setField(_tableId, _primaryKeys, 0, abi.encodePacked((player)));
+  }
+
   /** Get deltaX */
   function getDeltaX(uint256 block) internal view returns (uint256 deltaX) {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 0);
+    bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 1);
     return (uint256(Bytes.slice32(_blob, 0)));
   }
 
@@ -101,7 +144,7 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    bytes memory _blob = _store.getField(_tableId, _primaryKeys, 0);
+    bytes memory _blob = _store.getField(_tableId, _primaryKeys, 1);
     return (uint256(Bytes.slice32(_blob, 0)));
   }
 
@@ -110,7 +153,7 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    StoreSwitch.setField(_tableId, _primaryKeys, 0, abi.encodePacked((deltaX)));
+    StoreSwitch.setField(_tableId, _primaryKeys, 1, abi.encodePacked((deltaX)));
   }
 
   /** Set deltaX (using the specified store) */
@@ -118,7 +161,7 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    _store.setField(_tableId, _primaryKeys, 0, abi.encodePacked((deltaX)));
+    _store.setField(_tableId, _primaryKeys, 1, abi.encodePacked((deltaX)));
   }
 
   /** Get deltaY */
@@ -126,7 +169,7 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 1);
+    bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 2);
     return (int256(uint256(Bytes.slice32(_blob, 0))));
   }
 
@@ -135,7 +178,7 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    bytes memory _blob = _store.getField(_tableId, _primaryKeys, 1);
+    bytes memory _blob = _store.getField(_tableId, _primaryKeys, 2);
     return (int256(uint256(Bytes.slice32(_blob, 0))));
   }
 
@@ -144,7 +187,7 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    StoreSwitch.setField(_tableId, _primaryKeys, 1, abi.encodePacked((deltaY)));
+    StoreSwitch.setField(_tableId, _primaryKeys, 2, abi.encodePacked((deltaY)));
   }
 
   /** Set deltaY (using the specified store) */
@@ -152,41 +195,75 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    _store.setField(_tableId, _primaryKeys, 1, abi.encodePacked((deltaY)));
+    _store.setField(_tableId, _primaryKeys, 2, abi.encodePacked((deltaY)));
   }
 
-  /** Get resolved */
-  function getResolved(uint256 block) internal view returns (BetStatus resolved) {
+  /** Get result */
+  function getResult(uint256 block) internal view returns (int256 result) {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 2);
+    bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 3);
+    return (int256(uint256(Bytes.slice32(_blob, 0))));
+  }
+
+  /** Get result (using the specified store) */
+  function getResult(IStore _store, uint256 block) internal view returns (int256 result) {
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32(uint256((block)));
+
+    bytes memory _blob = _store.getField(_tableId, _primaryKeys, 3);
+    return (int256(uint256(Bytes.slice32(_blob, 0))));
+  }
+
+  /** Set result */
+  function setResult(uint256 block, int256 result) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32(uint256((block)));
+
+    StoreSwitch.setField(_tableId, _primaryKeys, 3, abi.encodePacked((result)));
+  }
+
+  /** Set result (using the specified store) */
+  function setResult(IStore _store, uint256 block, int256 result) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32(uint256((block)));
+
+    _store.setField(_tableId, _primaryKeys, 3, abi.encodePacked((result)));
+  }
+
+  /** Get resolution */
+  function getResolution(uint256 block) internal view returns (BetStatus resolution) {
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32(uint256((block)));
+
+    bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 4);
     return BetStatus(uint8(Bytes.slice1(_blob, 0)));
   }
 
-  /** Get resolved (using the specified store) */
-  function getResolved(IStore _store, uint256 block) internal view returns (BetStatus resolved) {
+  /** Get resolution (using the specified store) */
+  function getResolution(IStore _store, uint256 block) internal view returns (BetStatus resolution) {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    bytes memory _blob = _store.getField(_tableId, _primaryKeys, 2);
+    bytes memory _blob = _store.getField(_tableId, _primaryKeys, 4);
     return BetStatus(uint8(Bytes.slice1(_blob, 0)));
   }
 
-  /** Set resolved */
-  function setResolved(uint256 block, BetStatus resolved) internal {
+  /** Set resolution */
+  function setResolution(uint256 block, BetStatus resolution) internal {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    StoreSwitch.setField(_tableId, _primaryKeys, 2, abi.encodePacked(uint8(resolved)));
+    StoreSwitch.setField(_tableId, _primaryKeys, 4, abi.encodePacked(uint8(resolution)));
   }
 
-  /** Set resolved (using the specified store) */
-  function setResolved(IStore _store, uint256 block, BetStatus resolved) internal {
+  /** Set resolution (using the specified store) */
+  function setResolution(IStore _store, uint256 block, BetStatus resolution) internal {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    _store.setField(_tableId, _primaryKeys, 2, abi.encodePacked(uint8(resolved)));
+    _store.setField(_tableId, _primaryKeys, 4, abi.encodePacked(uint8(resolution)));
   }
 
   /** Get wager */
@@ -194,7 +271,7 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 3);
+    bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 5);
     return (uint256(Bytes.slice32(_blob, 0)));
   }
 
@@ -203,7 +280,7 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    bytes memory _blob = _store.getField(_tableId, _primaryKeys, 3);
+    bytes memory _blob = _store.getField(_tableId, _primaryKeys, 5);
     return (uint256(Bytes.slice32(_blob, 0)));
   }
 
@@ -212,7 +289,7 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    StoreSwitch.setField(_tableId, _primaryKeys, 3, abi.encodePacked((wager)));
+    StoreSwitch.setField(_tableId, _primaryKeys, 5, abi.encodePacked((wager)));
   }
 
   /** Set wager (using the specified store) */
@@ -220,7 +297,41 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    _store.setField(_tableId, _primaryKeys, 3, abi.encodePacked((wager)));
+    _store.setField(_tableId, _primaryKeys, 5, abi.encodePacked((wager)));
+  }
+
+  /** Get payout */
+  function getPayout(uint256 block) internal view returns (uint256 payout) {
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32(uint256((block)));
+
+    bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 6);
+    return (uint256(Bytes.slice32(_blob, 0)));
+  }
+
+  /** Get payout (using the specified store) */
+  function getPayout(IStore _store, uint256 block) internal view returns (uint256 payout) {
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32(uint256((block)));
+
+    bytes memory _blob = _store.getField(_tableId, _primaryKeys, 6);
+    return (uint256(Bytes.slice32(_blob, 0)));
+  }
+
+  /** Set payout */
+  function setPayout(uint256 block, uint256 payout) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32(uint256((block)));
+
+    StoreSwitch.setField(_tableId, _primaryKeys, 6, abi.encodePacked((payout)));
+  }
+
+  /** Set payout (using the specified store) */
+  function setPayout(IStore _store, uint256 block, uint256 payout) internal {
+    bytes32[] memory _primaryKeys = new bytes32[](1);
+    _primaryKeys[0] = bytes32(uint256((block)));
+
+    _store.setField(_tableId, _primaryKeys, 6, abi.encodePacked((payout)));
   }
 
   /** Get odds */
@@ -228,7 +339,7 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 4);
+    bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 7);
     return (uint256(Bytes.slice32(_blob, 0)));
   }
 
@@ -237,7 +348,7 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    bytes memory _blob = _store.getField(_tableId, _primaryKeys, 4);
+    bytes memory _blob = _store.getField(_tableId, _primaryKeys, 7);
     return (uint256(Bytes.slice32(_blob, 0)));
   }
 
@@ -246,7 +357,7 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    StoreSwitch.setField(_tableId, _primaryKeys, 4, abi.encodePacked((odds)));
+    StoreSwitch.setField(_tableId, _primaryKeys, 7, abi.encodePacked((odds)));
   }
 
   /** Set odds (using the specified store) */
@@ -254,7 +365,7 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    _store.setField(_tableId, _primaryKeys, 4, abi.encodePacked((odds)));
+    _store.setField(_tableId, _primaryKeys, 7, abi.encodePacked((odds)));
   }
 
   /** Get wentUp */
@@ -262,7 +373,7 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 5);
+    bytes memory _blob = StoreSwitch.getField(_tableId, _primaryKeys, 8);
     return toStaticArray_bool_5(SliceLib.getSubslice(_blob, 0, _blob.length).decodeArray_bool());
   }
 
@@ -271,7 +382,7 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    bytes memory _blob = _store.getField(_tableId, _primaryKeys, 5);
+    bytes memory _blob = _store.getField(_tableId, _primaryKeys, 8);
     return toStaticArray_bool_5(SliceLib.getSubslice(_blob, 0, _blob.length).decodeArray_bool());
   }
 
@@ -280,7 +391,7 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    StoreSwitch.setField(_tableId, _primaryKeys, 5, EncodeArray.encode(fromStaticArray_bool_5(wentUp)));
+    StoreSwitch.setField(_tableId, _primaryKeys, 8, EncodeArray.encode(fromStaticArray_bool_5(wentUp)));
   }
 
   /** Set wentUp (using the specified store) */
@@ -288,7 +399,7 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    _store.setField(_tableId, _primaryKeys, 5, EncodeArray.encode(fromStaticArray_bool_5(wentUp)));
+    _store.setField(_tableId, _primaryKeys, 8, EncodeArray.encode(fromStaticArray_bool_5(wentUp)));
   }
 
   /** Push an element to wentUp */
@@ -296,7 +407,7 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    StoreSwitch.pushToField(_tableId, _primaryKeys, 5, abi.encodePacked((_element)));
+    StoreSwitch.pushToField(_tableId, _primaryKeys, 8, abi.encodePacked((_element)));
   }
 
   /** Push an element to wentUp (using the specified store) */
@@ -304,7 +415,7 @@ library BetTable {
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
 
-    _store.pushToField(_tableId, _primaryKeys, 5, abi.encodePacked((_element)));
+    _store.pushToField(_tableId, _primaryKeys, 8, abi.encodePacked((_element)));
   }
 
   /** Get the full data */
@@ -328,14 +439,17 @@ library BetTable {
   /** Set the full data using individual values */
   function set(
     uint256 block,
+    address player,
     uint256 deltaX,
     int256 deltaY,
-    BetStatus resolved,
+    int256 result,
+    BetStatus resolution,
     uint256 wager,
+    uint256 payout,
     uint256 odds,
     bool[5] memory wentUp
   ) internal {
-    bytes memory _data = encode(deltaX, deltaY, resolved, wager, odds, wentUp);
+    bytes memory _data = encode(player, deltaX, deltaY, result, resolution, wager, payout, odds, wentUp);
 
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
@@ -347,14 +461,17 @@ library BetTable {
   function set(
     IStore _store,
     uint256 block,
+    address player,
     uint256 deltaX,
     int256 deltaY,
-    BetStatus resolved,
+    int256 result,
+    BetStatus resolution,
     uint256 wager,
+    uint256 payout,
     uint256 odds,
     bool[5] memory wentUp
   ) internal {
-    bytes memory _data = encode(deltaX, deltaY, resolved, wager, odds, wentUp);
+    bytes memory _data = encode(player, deltaX, deltaY, result, resolution, wager, payout, odds, wentUp);
 
     bytes32[] memory _primaryKeys = new bytes32[](1);
     _primaryKeys[0] = bytes32(uint256((block)));
@@ -364,34 +481,63 @@ library BetTable {
 
   /** Set the full data using the data struct */
   function set(uint256 block, BetTableData memory _table) internal {
-    set(block, _table.deltaX, _table.deltaY, _table.resolved, _table.wager, _table.odds, _table.wentUp);
+    set(
+      block,
+      _table.player,
+      _table.deltaX,
+      _table.deltaY,
+      _table.result,
+      _table.resolution,
+      _table.wager,
+      _table.payout,
+      _table.odds,
+      _table.wentUp
+    );
   }
 
   /** Set the full data using the data struct (using the specified store) */
   function set(IStore _store, uint256 block, BetTableData memory _table) internal {
-    set(_store, block, _table.deltaX, _table.deltaY, _table.resolved, _table.wager, _table.odds, _table.wentUp);
+    set(
+      _store,
+      block,
+      _table.player,
+      _table.deltaX,
+      _table.deltaY,
+      _table.result,
+      _table.resolution,
+      _table.wager,
+      _table.payout,
+      _table.odds,
+      _table.wentUp
+    );
   }
 
   /** Decode the tightly packed blob using this table's schema */
   function decode(bytes memory _blob) internal view returns (BetTableData memory _table) {
-    // 129 is the total byte length of static data
-    PackedCounter _encodedLengths = PackedCounter.wrap(Bytes.slice32(_blob, 129));
+    // 213 is the total byte length of static data
+    PackedCounter _encodedLengths = PackedCounter.wrap(Bytes.slice32(_blob, 213));
 
-    _table.deltaX = (uint256(Bytes.slice32(_blob, 0)));
+    _table.player = (address(Bytes.slice20(_blob, 0)));
 
-    _table.deltaY = (int256(uint256(Bytes.slice32(_blob, 32))));
+    _table.deltaX = (uint256(Bytes.slice32(_blob, 20)));
 
-    _table.resolved = BetStatus(uint8(Bytes.slice1(_blob, 64)));
+    _table.deltaY = (int256(uint256(Bytes.slice32(_blob, 52))));
 
-    _table.wager = (uint256(Bytes.slice32(_blob, 65)));
+    _table.result = (int256(uint256(Bytes.slice32(_blob, 84))));
 
-    _table.odds = (uint256(Bytes.slice32(_blob, 97)));
+    _table.resolution = BetStatus(uint8(Bytes.slice1(_blob, 116)));
+
+    _table.wager = (uint256(Bytes.slice32(_blob, 117)));
+
+    _table.payout = (uint256(Bytes.slice32(_blob, 149)));
+
+    _table.odds = (uint256(Bytes.slice32(_blob, 181)));
 
     // Store trims the blob if dynamic fields are all empty
-    if (_blob.length > 129) {
+    if (_blob.length > 213) {
       uint256 _start;
       // skip static data length + dynamic lengths word
-      uint256 _end = 161;
+      uint256 _end = 245;
 
       _start = _end;
       _end += _encodedLengths.atIndex(0);
@@ -401,10 +547,13 @@ library BetTable {
 
   /** Tightly pack full data using this table's schema */
   function encode(
+    address player,
     uint256 deltaX,
     int256 deltaY,
-    BetStatus resolved,
+    int256 result,
+    BetStatus resolution,
     uint256 wager,
+    uint256 payout,
     uint256 odds,
     bool[5] memory wentUp
   ) internal view returns (bytes memory) {
@@ -414,10 +563,13 @@ library BetTable {
 
     return
       abi.encodePacked(
+        player,
         deltaX,
         deltaY,
-        resolved,
+        result,
+        resolution,
         wager,
+        payout,
         odds,
         _encodedLengths.unwrap(),
         EncodeArray.encode(fromStaticArray_bool_5(wentUp))

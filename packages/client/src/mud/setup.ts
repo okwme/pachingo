@@ -110,6 +110,7 @@ export async function setup() {
       ...result.components,
       ...clientComponents,
     },
+    networkConfig,
     worldContract,
     worldSend: bindFastTxExecute(worldContract),
     fastTxExecutor,

@@ -8,11 +8,9 @@ import { Has, getComponentValueStrict } from "@latticexyz/recs";
 import { ethers } from "ethers";
 // Using a global context to easily pass callbacks around to Pixi... not ideal but it'll do for now.
 window.PACHINGO = {}
-
+let pollBalance
 export const App = () => {
   const [initialized, setInitialized] = useState(false)
-  let bets = []
-
   const [currentView, setCurrentView] = useState(INTERFACE_STATE.NOW)
   const {
     components: { Bank, BetTable, OpenBet },
@@ -22,6 +20,18 @@ export const App = () => {
     networkConfig,
     worldContract
   } = useMUD();
+
+  const [userBalance, setUserBalance] = useState("0")
+
+  useEffect(() => {
+    pollBalance = setInterval(async () => {
+      const userBalanceBN = await signer.get()?.getBalance()
+      setUserBalance(ethers.utils.formatEther(userBalanceBN))
+    }, 1000)
+    return () => {
+      clearInterval(pollBalance)
+    }
+  })
 
   // // TODO (cezar): Currently adding mock state variables here. They will eventually come from MUD
   // Bank.update$.subscribe((_bank) => {
@@ -52,32 +62,21 @@ export const App = () => {
 
   const openBet = useEntityQuery([Has(OpenBet)])[0]
   const maybeOpenBet = useComponentValue(OpenBet, openBet)
-  console.log({ maybeOpenBet })
 
   const bank = useEntityQuery([Has(Bank)])[0];
   const maybeBank = useComponentValue(Bank, bank)
   const houseCandy = (maybeBank ? maybeBank.balance - maybeBank.escrow : 0).toString()
+
   const bankBalance = maybeBank ? ethers.utils.formatEther(maybeBank.balance) : "0"
-  console.log({ bankBalance })
-  // console.log(bankBalance || 'no bank balance!!!')
-  // bankBalance && setInitialized(true)
   const bankEscrow = maybeBank ? ethers.utils.formatEther(maybeBank.escrow) : "0"
 
-  // bank.map((entity) => console.log("b",))
-
   const betTable = useEntityQuery([Has(BetTable)]);
+  // keep this (vvvv) commented out but for reference of how to do it another way
   // betTable.map((entity) => useComponentValue(BetTable, entity))
   const allBets = betTable.map((entity) => getComponentValueStrict(BetTable, entity))
 
-  // console.log(`betTable.entries()`, betTable.entries())
 
-  //const counter = useComponentValue(CounterTable, singletonEntity);
 
-  // const houseCandy = 1320000
-
-  // use ethers to convert bankBalance and bankEscrow to ether as houseCandy
-  // var houseCandy = ethers.utils.formatEther(bankBalance - bankEscrow)
-  // console.log({ houseCandy })
 
   const yourCandy = 325
   const [betAmount, setBetAmount] = useState(5)

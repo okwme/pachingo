@@ -18,6 +18,7 @@ import BallSound from "./pixi/assets/red_ball_pachinko_final.wav"
 import LineSound from "./pixi/assets/red_line_pachinko_final.wav"
 import LandingSound from "./pixi/assets/landing_screen_music_loop_final.wav"
 import TransitionSound from "./pixi/assets/transition_landing_to_game_final.wav"
+import BetCommitSound from "./pixi/assets/transitition_commit_bed.wav"
 import { sound } from '@pixi/sound';
 import { INTERFACE_STATE } from "./constants.js";
 
@@ -98,6 +99,7 @@ export default class PixiWrapper extends React.Component {
     sound.add("LineSound", LineSound)
     sound.add("LandingSound", LandingSound)
     sound.add("TransitionSound", TransitionSound)
+    sound.add("BetCommitSound", BetCommitSound)
     sound.play("LandingSound", { loop: true, volume: 0.6 })
 
     await this.startApp()

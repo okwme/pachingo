@@ -120,7 +120,7 @@ export const App = () => {
     try {
       let worldBalance = await worldContract.provider.getBalance(networkConfig.worldAddress)
       // const getBank = await worldContract.getBank()
-      const howMuchShouldWorldStartWith = "5"
+      const howMuchShouldWorldStartWith = "100"
       const howMuchShouldWorldStartWithWei = ethers.utils.parseEther(howMuchShouldWorldStartWith)
       if (worldBalance.lt(howMuchShouldWorldStartWithWei)) {
         let userBalance = await signer.get()?.getBalance()

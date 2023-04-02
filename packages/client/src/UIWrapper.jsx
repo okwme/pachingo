@@ -78,7 +78,7 @@ export default class UIWrapper extends React.Component {
             </div>
 
             <div className={"place-bet-button " + (cantBet && 'disabled')}>
-              <div onClick={cantBet ? () => { } : onBet} className="overlay-button button-wide">Bet</div>
+              <div onClick={cantBet ? () => { } : () => { onBet(); window.PACHINGO.sound.play("BetCommitSound") }} className="overlay-button button-wide">Bet</div>
             </div>
           </div>
         </div>

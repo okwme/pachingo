@@ -67,7 +67,7 @@ export default class CreatureBody extends PIXI.Container {
     for (let i = 0; i < this.container.children.length; i++) {
       let bodyPart = this.container.children[i]
 
-      let duration = 0.25
+      let duration = 0.04
       let tweenPromise = pifyTween(new TWEEN.Tween(bodyPart.position)
       .to({ y: delta * bodyPart.getCoreHeight() / 2 }, duration * 1000)
       .easing(TWEEN.Easing.Cubic.InOut)

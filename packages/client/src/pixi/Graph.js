@@ -72,19 +72,19 @@ export default class Graph extends PIXI.Container {
   async setWinningPath(deltaX, deltaY, wentUp) {
     let column = 1, row = 1
 
-    // for (let i = 0; i <= deltaX; i++) {
-    //   let isFinal = (i == (deltaX))
-    //   await this.nodes[column][row].setIsWinningState(true, wentUp[i], !isFinal)
+    for (let i = 0; i <= deltaX; i++) {
+      let isFinal = (i == (deltaX))
+      await this.nodes[column][row].setIsWinningState(true, wentUp[i], !isFinal)
       
-    //   column++
-    //   if (!wentUp[i]) row++
-    // }
+      column++
+      if (!wentUp[i]) row++
+    }
 
     for (let i = 0; i < deltaX; i++) {
-      await this.nodes[1][1].setIsWinningState(true, wentUp[i], true)
-      await Promise.all([this.nodes[2][1 + (wentUp[i] ? 0 : 1)].setIsWinningState(true, wentUp[i], false), this.creature.addNode(wentUp[i], 750)])
+      // await this.nodes[1][1].setIsWinningState(true, wentUp[i], true)
+      // await Promise.all([this.nodes[2][1 + (wentUp[i] ? 0 : 1)].setIsWinningState(true, wentUp[i], false)])
       //await this.nodes[2][1 + (wentUp[i] ? 0 : 1)].setIsWinningState(true, wentUp[i], false)
-      await Promise.all([this.advanceByOneStep(wentUp[i])])
+      await Promise.all([this.advanceByOneStep(wentUp[i]), this.creature.addNode(wentUp[i], 750)])
 
       // await this.advanceByOneStep(wentUp[i])
       // await this.creature.addNode(wentUp[i])

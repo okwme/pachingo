@@ -9,6 +9,8 @@ import BodyPart from "./pixi/assets/BodyPart.png"
 import HeadTop from "./pixi/assets/HeadTop.png"
 import HeadJaw from "./pixi/assets/HeadJaw.png"
 import HeadTentacles from "./pixi/assets/HeadTentacles.png"
+import MainLoop from "./pixi/assets/MainLoop.wav"
+import { sound } from '@pixi/sound';
 
 export default class PixiWrapper extends React.Component {
   constructor(props) {
@@ -69,6 +71,8 @@ export default class PixiWrapper extends React.Component {
       console.error("Caught exception in loading assets", e)
     }
 
+    sound.add("MainLoop", MainLoop)
+    sound.play("MainLoop", { loop: true, volume: 0.15 })
     await this.startApp()
   }
 
@@ -82,6 +86,7 @@ export default class PixiWrapper extends React.Component {
         loader.add("HeadTop", HeadTop)
         loader.add("HeadJaw", HeadJaw)
         loader.add("HeadTentacles", HeadTentacles)
+        loader.add("MainLoop", MainLoop)
         loader.onComplete.add(() => { res() })
         loader.load()
       } catch (e) {

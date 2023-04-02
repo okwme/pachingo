@@ -31,6 +31,7 @@
     "@latticexyz/std-client": "2.0.0-alpha.51",
     "@latticexyz/utils": "2.0.0-alpha.51",
     "@latticexyz/world": "2.0.0-alpha.51",
+    "@pixi/sound": "4.3.3",
     "@tweenjs/tween.js": "^18.6.4",
     "@wagmi/chains": "^0.2.14",
     "async-mutex": "^0.4.0",

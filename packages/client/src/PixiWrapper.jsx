@@ -176,16 +176,16 @@ export default class PixiWrapper extends React.Component {
   
         if (this.currentBet && lastBet.resolution != this.currentBet.resolution) {
           if (lastBet.resolution == 1) {
+            this.currentBet = null
             //await this._pAppContainer.setStateWon(deltaX, 1, 0, 1, 100, [false, true, true, false, true])
       
             await this._pAppContainer.setStateWon(deltaX, deltaY, odds, resolved, wager, wentUp)
             // window.PACHINGO.setIsWonActive(true)
-            window.PACHINGO.onWin()   
-            this.currentBet = null 
+            window.PACHINGO.onWin()               
           } else if (lastBet.resolution == 2) {
+            this.currentBet = null
             await this._pAppContainer.setStateLost(deltaX, deltaY, odds, resolved, wager, wentUp)
             window.PACHINGO.onLose()
-            this.currentBet = null
           } else {
   
           }  

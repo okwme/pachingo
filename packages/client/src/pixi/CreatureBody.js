@@ -10,15 +10,11 @@ export default class CreatureBody extends PIXI.Container {
     this.container = new PIXI.Container()
     this.addChild(this.container)
 
-    this.buildBody()
-
-    this.interactive = true
-    this.on("click", this.onClick)
-    
+    this.buildBody()    
   }
 
   onClick() {
-    this.addNode(this.values[this.values.length - 1] + ((Math.random() > 0.5) ? 1 : -1))
+    
   }
 
   buildBody() {

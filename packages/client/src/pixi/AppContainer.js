@@ -22,7 +22,7 @@ export default class AppContainer extends PIXI.Container {
     // this.creatureHead.rotation = -0.4
     // this.twoNode.x = this.oneNode.getBounds().x + this.oneNode.getBounds().width
     // this.twoNode.y = this.oneNode.getBounds().y //+ this.oneNode.getBounds().height / 2
-    this.creature = new Creature()
+    this.creature = new Creature([-2, -1, 0, 1, 0, 1])
     this.addChild(this.creature)
     this.creature.position.set(this.W * 0.55 , this.H / 2)
     this.creature.scale.set(0.1)

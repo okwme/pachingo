@@ -6,6 +6,9 @@ import AppContainer from "./pixi/AppContainer.js"
 import WingEnd from "./pixi/assets/WingEnd.png"
 import WingBone from "./pixi/assets/WingBone.png"
 import BodyPart from "./pixi/assets/BodyPart.png"
+import HeadTop from "./pixi/assets/HeadTop.png"
+import HeadJaw from "./pixi/assets/HeadJaw.png"
+import HeadTentacles from "./pixi/assets/HeadTentacles.png"
 
 export default class PixiWrapper extends React.Component {
   constructor(props) {
@@ -70,7 +73,10 @@ export default class PixiWrapper extends React.Component {
       try {
         loader.add("WingEnd", WingEnd)
         loader.add("WingBone", WingBone)
-        loader.add("BodyPart", BodyPart)  
+        loader.add("BodyPart", BodyPart)
+        loader.add("HeadTop", HeadTop)
+        loader.add("HeadJaw", HeadJaw)
+        loader.add("HeadTentacles", HeadTentacles)
         loader.onComplete.add(() => { res() })
         loader.load()
       } catch (e) {

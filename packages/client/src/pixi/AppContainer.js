@@ -1,6 +1,6 @@
 import * as PIXI from 'pixi.js'
 import Graph from './Graph';
-import CreatureBody from './CreatureBody';
+import Creature from './Creature';
 
 export default class AppContainer extends PIXI.Container {
   constructor(width, height) {
@@ -19,12 +19,13 @@ export default class AppContainer extends PIXI.Container {
     this.graph.position.y = this.H / 2
 
 
-    this.creatureBody = new CreatureBody([-2, -1, 0, 1, 0, 1])
-    this.addChild(this.creatureBody)
-    this.creatureBody.position.set(this.W * 0.5, this.H / 2)
-    this.creatureBody.scale.set(0.1)
+    // this.creatureHead.rotation = -0.4
     // this.twoNode.x = this.oneNode.getBounds().x + this.oneNode.getBounds().width
     // this.twoNode.y = this.oneNode.getBounds().y //+ this.oneNode.getBounds().height / 2
+    this.creature = new Creature()
+    this.addChild(this.creature)
+    this.creature.position.set(this.W * 0.55 , this.H / 2)
+    this.creature.scale.set(0.04)
   }
 
   setSelectedNode(selectedNode) {
@@ -33,7 +34,7 @@ export default class AppContainer extends PIXI.Container {
 
   tick() {
     const now = (new Date()).getTime()
-    this.creatureBody.tick()
+    this.creature.tick()
     // this.creatureBody.scale.set((Math.sin(now / 1000) + 1) * 0.2 + 0.1)
   }
 }

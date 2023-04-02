@@ -31,10 +31,10 @@ export const App = () => {
   const [isWelcomeActive, setIsWelcomeActive] = useState(true)
   window.PACHINGO.onDismissWelcome = async () => {
     setIsWelcomeActive(false)
-    window.PACHINGO.sound.play("BetSound")
+    window.PACHINGO.sound.play("TransitionSound")
     await sleep(100)
     window.PACHINGO.sound.play("MainLoop", { loop: true, volume: 0.6 })
-    await sleep(200)
+    await sleep(20)
     window.PACHINGO.sound.pause("LandingSound")
   }
   window.PACHINGO.setIsWelcomeActive = setIsWelcomeActive

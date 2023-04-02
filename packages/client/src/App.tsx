@@ -7,6 +7,7 @@ import { INTERFACE_STATE } from "./constants.js"
 import { Has } from "@latticexyz/recs";
 import WonOverlay from "./WonOverlay.jsx"
 import WelcomeOverlay from "./WelcomeOverlay.jsx"
+import sleep from "delay"
 
 // Using a global context to easily pass callbacks around to Pixi... not ideal but it'll do for now.
 if (!window.PACHINGO) window.PACHINGO = {}
@@ -19,9 +20,21 @@ export const App = () => {
     setIsWonActive(true)
     window.PACHINGO.sound.play("WinSound")
   }
+  window.PACHINGO.onLose = () => {
+    //setIsWonActive(true)
+    window.PACHINGO.sound.play("LoseSound", { volume: 2 })
+  }
   window.PACHINGO.setIsWonActive = setIsWonActive
 
   const [isWelcomeActive, setIsWelcomeActive] = useState(true)
+  window.PACHINGO.onDismissWelcome = async () => {
+    setIsWelcomeActive(false)
+    window.PACHINGO.sound.play("BetSound")
+    await sleep(100)
+    window.PACHINGO.sound.play("MainLoop", { loop: true, volume: 0.6 })
+    await sleep(200)
+    window.PACHINGO.sound.pause("LandingSound")
+  }
   window.PACHINGO.setIsWelcomeActive = setIsWelcomeActive
 
   const {

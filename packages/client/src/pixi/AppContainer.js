@@ -43,7 +43,7 @@ export default class AppContainer extends PIXI.Container {
   }
 
   async setStateLost(deltaX, deltaY, odds, resolved, wager, wentUp) {
-
+    await this.advanceState(deltaX, deltaY, wentUp)
   }
 
   async advanceState(deltaX, deltaY, wentUp, hasWon) {

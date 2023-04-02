@@ -11,9 +11,11 @@ import HeadJaw from "./pixi/assets/HeadJaw.png"
 import HeadTentacles from "./pixi/assets/HeadTentacles.png"
 import MainLoopSound from "./pixi/assets/bakground_ambience_for_gameplay_final.mp3"
 import WinSound from "./pixi/assets/win_pop_up_sound_final.wav"
+import LoseSound from "./pixi/assets/lose_sound.wav"
 import BetSound from "./pixi/assets/place_bed_sound_final.wav"
 import BallSound from "./pixi/assets/red_ball_pachinko_final.wav"
 import LineSound from "./pixi/assets/red_line_pachinko_final.wav"
+import LandingSound from "./pixi/assets/landing_screen_music_loop_final.wav"
 import { sound } from '@pixi/sound';
 
 if (!window.PACHINGO) window.PACHINGO = {}
@@ -32,9 +34,14 @@ export default class PixiWrapper extends React.Component {
 
   onKeyDown = async (e) => { 
     console.log(e.key)
-    if (e.key == "w") {
-      await this._pAppContainer.setStateWon(4, 1, 0, 1, 100, [false, true, true, false, true])
+    const deltaX = this.props.selectedNode.column - 1
+    if (e.key == "1") {
+      await this._pAppContainer.setStateWon(deltaX, 1, 0, 1, 100, [false, true, true, false, true])
       window.PACHINGO.onWin()
+    }
+    if (e.key == "2") {
+      await this._pAppContainer.setStateLost(deltaX, 1, 0, 1, 100, [false, true, true, false, true])
+      window.PACHINGO.onLose()
     }
   }
   onKeyUp = (e) => { }
@@ -81,10 +88,12 @@ export default class PixiWrapper extends React.Component {
 
     sound.add("MainLoop", MainLoopSound)
     sound.add("WinSound", WinSound)
+    sound.add("LoseSound", LoseSound)
     sound.add("BetSound", BetSound)
     sound.add("BallSound", BallSound)
     sound.add("LineSound", LineSound)
-    sound.play("MainLoop", { loop: true, volume: 0.6 })
+    sound.add("LandingSound", LandingSound)
+    sound.play("LandingSound", { loop: true, volume: 0.6 })
 
     await this.startApp()
   }
@@ -99,7 +108,7 @@ export default class PixiWrapper extends React.Component {
         loader.add("HeadTop", HeadTop)
         loader.add("HeadJaw", HeadJaw)
         loader.add("HeadTentacles", HeadTentacles)
-        loader.add("MainLoop", MainLoopSound)
+        //loader.add("MainLoop", MainLoopSound)
         loader.onComplete.add(() => { res() })
         loader.load()
       } catch (e) {

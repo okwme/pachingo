@@ -13,7 +13,7 @@ export default class WelcomeOverlay extends React.Component {
           The game doth work like unto pachinko, whereat each stage the path may ascend or descend, with an even 50/50% possibility of going either way. The farther ye wager, the more the chances be divided, and thusly thy reward shall be greater.
           <br/><br/>
           However, take heed, for the gods of chance doth favour both prosperity and adversity with equal measure.
-          <div style={{marginTop: '40px'}} className="overlay-button" onClick={() => { setIsWelcomeActive(false) }}>I Wish to Partake</div>
+          <div style={{marginTop: '40px'}} className="overlay-button" onClick={() => { window.PACHINGO.onDismissWelcome() }}>I Wish to Partake</div>
         </div>
       </div>
     )

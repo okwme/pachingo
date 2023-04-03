@@ -51,7 +51,7 @@ export async function getNetworkConfig(): Promise<NetworkConfig> {
     },
     privateKey: burnerWallet().value,
     chainId,
-    modeUrl: undefined,//params.get("mode") ?? chain.modeUrl,
+    modeUrl: params.get("mode") ?? chain.modeUrl,
     faucetServiceUrl: params.get("faucet") ?? chain.faucetUrl,
     worldAddress,
     initialBlockNumber:

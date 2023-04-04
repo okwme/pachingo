@@ -118,27 +118,28 @@ export const App = () => {
     if (initialized) return
     setInitialized(true)
     try {
-      let worldBalance = await worldContract.provider.getBalance(networkConfig.worldAddress)
+      // let worldBalance = await worldContract.provider.getBalance(networkConfig.worldAddress)
       // const getBank = await worldContract.getBank()
-      const howMuchShouldWorldStartWith = "100"
+      const howMuchShouldWorldStartWith = "0.0001"
       const howMuchShouldWorldStartWithWei = ethers.utils.parseEther(howMuchShouldWorldStartWith)
-      if (worldBalance.lt(howMuchShouldWorldStartWithWei)) {
-        let userBalance = await signer.get()?.getBalance()
-        if (userBalance?.lt(howMuchShouldWorldStartWithWei)) {
-          alert("UH OHHH not enough money to send to world contract")
-          setInitialized(false)
-        } else {
-          console.log(`---Depositing ${howMuchShouldWorldStartWith} into Bank`)
-          const sendTx = await worldSend("sendMoney", [{ value: howMuchShouldWorldStartWithWei }])
-          await sendTx.wait();
-          console.log('---Successfully deposited ')
-        }
+      // if (worldBalance.lt(howMuchShouldWorldStartWithWei)) {
+      let userBalance = await signer.get()?.getBalance()
+      if (userBalance?.lt(howMuchShouldWorldStartWithWei)) {
+        alert("UH OHHH not enough money to send to world contract")
+        setInitialized(false)
+      } else {
+        console.log(`---Depositing ${howMuchShouldWorldStartWith} into Bank`)
+        const sendTx = await worldSend("sendMoney", [{ value: howMuchShouldWorldStartWithWei }])
+        await sendTx.wait();
+        console.log('---Successfully deposited ')
       }
+      // }
     } catch (error) {
       console.error({ error })
       setInitialized(false)
     }
   }
+  initializeWorld()
 
   const onBet = async () => {
     // can't bet on first node

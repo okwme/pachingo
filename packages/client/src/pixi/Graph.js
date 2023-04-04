@@ -76,7 +76,7 @@ export default class Graph extends PIXI.Container {
     for (let i = 0; i <= deltaX; i++) {
       let isFinal = (i == (deltaX))
       await this.nodes[column][row].setIsWinningState(true, wentUp[i], !isFinal)
-      
+
       column++
       if (!wentUp[i]) row++
     }
@@ -129,8 +129,8 @@ export default class Graph extends PIXI.Container {
           node.position.x = coords.x
           node.position.y = coords.y
           this.nodes[column][row] = node
-          this.addChild(node)  
-        } else {          
+          this.addChild(node)
+        } else {
           this.nodes[column][row] = this.nodes[column + 1][row + (wentUp ? 0 : 1)]
           this.nodes[column][row].column = column
           this.nodes[column][row].row = row

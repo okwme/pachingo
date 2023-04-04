@@ -19,7 +19,7 @@ export default class AppContainer extends PIXI.Container {
     this.background = new Background()
     this.addChild(this.background)
 
-    this.graph = new Graph(7, 150, 200, 30, 0xffffff)
+    this.graph = new Graph(6, 150, 200, 30, 0xffffff)
     this.addChild(this.graph)
     this.graph.position.x = this.W / 2
     this.graph.position.y = this.H / 2
@@ -30,7 +30,7 @@ export default class AppContainer extends PIXI.Container {
     // this.twoNode.y = this.oneNode.getBounds().y //+ this.oneNode.getBounds().height / 2
     this.creature = new Creature([-2, -1, 0, 1, 0, 1])
     this.addChild(this.creature)
-    this.creature.position.set(this.W * 0.55 , this.H / 2)
+    this.creature.position.set(this.W * 0.55, this.H / 2)
     this.creature.scale.set(0.15)
 
     this.graph.creature = this.creature
@@ -73,22 +73,22 @@ export default class AppContainer extends PIXI.Container {
     if (isNow) {
 
       let t1 = pifyTween(new TWEEN.Tween(this.creature.scale)
-      .to({ x: 0.15, y: 0.15 }, 2 * 1000)
-      .easing(TWEEN.Easing.Cubic.InOut)
-      .delay(0)
-      .start())
-  
+        .to({ x: 0.15, y: 0.15 }, 2 * 1000)
+        .easing(TWEEN.Easing.Cubic.InOut)
+        .delay(0)
+        .start())
+
       let t2 = pifyTween(new TWEEN.Tween(this.graph)
-      .to({ alpha: 1 }, 2 * 1000)
-      .easing(TWEEN.Easing.Cubic.InOut)
-      .delay(1000)
-      .start())
+        .to({ alpha: 1 }, 2 * 1000)
+        .easing(TWEEN.Easing.Cubic.InOut)
+        .delay(1000)
+        .start())
 
       let t3 = pifyTween(new TWEEN.Tween(this.creature.position)
-      .to({ x: this.W * 0.55, y: this.H / 2 }, 1.75 * 1000)
-      .easing(TWEEN.Easing.Cubic.InOut)
-      .delay(100)
-      .start())
+        .to({ x: this.W * 0.55, y: this.H / 2 }, 1.75 * 1000)
+        .easing(TWEEN.Easing.Cubic.InOut)
+        .delay(100)
+        .start())
 
       await Promise.all([t1, t2, t3])
 
@@ -100,22 +100,22 @@ export default class AppContainer extends PIXI.Container {
       // this.creature.scale.set(0.08)
       // this.creature.position.set(this.W * 0.85 , this.H / 2)
       let t1 = pifyTween(new TWEEN.Tween(this.creature.scale)
-      .to({ x: 0.08, y: 0.08 }, 2 * 1000)
-      .easing(TWEEN.Easing.Cubic.InOut)
-      .delay(500)
-      .start())
-  
+        .to({ x: 0.08, y: 0.08 }, 2 * 1000)
+        .easing(TWEEN.Easing.Cubic.InOut)
+        .delay(500)
+        .start())
+
       let t2 = pifyTween(new TWEEN.Tween(this.graph)
-      .to({ alpha: 0 }, 0.75 * 1000)
-      .easing(TWEEN.Easing.Cubic.InOut)
-      .delay(0)
-      .start())
+        .to({ alpha: 0 }, 0.75 * 1000)
+        .easing(TWEEN.Easing.Cubic.InOut)
+        .delay(0)
+        .start())
 
       let t3 = pifyTween(new TWEEN.Tween(this.creature.position)
-      .to({ x: this.W * 0.85, y: this.H / 2 }, 2 * 1000)
-      .easing(TWEEN.Easing.Cubic.InOut)
-      .delay(500)
-      .start())
+        .to({ x: this.W * 0.85, y: this.H / 2 }, 2 * 1000)
+        .easing(TWEEN.Easing.Cubic.InOut)
+        .delay(500)
+        .start())
 
       await Promise.all([t1, t2, t3])
 

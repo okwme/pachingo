@@ -22,24 +22,24 @@ export default class GraphNode extends PIXI.Container {
 
     this.nodeGraphics = new PIXI.Graphics();
 
-      // No edges for last column
+    // No edges for last column
     // if (column != noColumns) {
-      this.topEdgeGraphics = new PIXI.Graphics()
-      this.topEdgeGraphics.lineStyle(this.edgeLineWidth, this.color, 1)
-      this.topEdgeGraphics.moveTo(0, 0)
-      this.topEdgeGraphics.lineTo(this.columnGap, -this.rowGap / 2)
-      //this.topEdgeGraphics.drawDashLine(columnGap, -rowGap / 2, 8, 8)
-      // this.topEdgeGraphics.cacheAsBitmap = true
-      this.addChild(this.topEdgeGraphics)
-  
-      this.bottomEdgeGraphics = new PIXI.Graphics()
-      this.bottomEdgeGraphics.lineStyle(this.edgeLineWidth, this.color, 1)
-      this.bottomEdgeGraphics.moveTo(0, 0)
-      this.bottomEdgeGraphics.lineTo(this.columnGap, +this.rowGap / 2)
-      // this.bottomEdgeGraphics.cacheAsBitmap = true
-      this.addChild(this.bottomEdgeGraphics)  
+    this.topEdgeGraphics = new PIXI.Graphics()
+    this.topEdgeGraphics.lineStyle(this.edgeLineWidth, this.color, 1)
+    this.topEdgeGraphics.moveTo(0, 0)
+    this.topEdgeGraphics.lineTo(this.columnGap, -this.rowGap / 2)
+    //this.topEdgeGraphics.drawDashLine(columnGap, -rowGap / 2, 8, 8)
+    // this.topEdgeGraphics.cacheAsBitmap = true
+    this.addChild(this.topEdgeGraphics)
+
+    this.bottomEdgeGraphics = new PIXI.Graphics()
+    this.bottomEdgeGraphics.lineStyle(this.edgeLineWidth, this.color, 1)
+    this.bottomEdgeGraphics.moveTo(0, 0)
+    this.bottomEdgeGraphics.lineTo(this.columnGap, +this.rowGap / 2)
+    // this.bottomEdgeGraphics.cacheAsBitmap = true
+    this.addChild(this.bottomEdgeGraphics)
     // }
-  
+
     /*
 
     this.nodeGraphics.lineStyle(0.5, 0xffffff, 1)
@@ -122,11 +122,11 @@ export default class GraphNode extends PIXI.Container {
       // for (let angle = 0; angle <= 2 * Math.PI + Math.PI / 16; angle += Math.PI / 32) {
       //   let x = r * Math.cos(angle) + dX
       //   let y = r * Math.sin(angle) + dY
-  
+
       //   polygon.push(x + noise3D(x + 10 * this.column, y + 10 * this.row, now / 10, 0.04, 1))
       //   polygon.push(y + yOffset + noise3D(x + 10 * this.column, y + 10 * this.row, now / 10, 0.022, 5))
       // }
-  
+
       // this.selectedGraphics.drawPolygon(polygon)
       this.selectedGraphics.drawCircle(dX, dY, r)
 
@@ -157,10 +157,10 @@ export default class GraphNode extends PIXI.Container {
       sound.play("BallSound")
       let lineSoundPromise = async () => {
         await delay(200)
-        sound.play("LineSound")        
+        sound.play("LineSound")
       }
       lineSoundPromise()
-      
+
 
       this.oldColor = this.color
 
@@ -170,7 +170,7 @@ export default class GraphNode extends PIXI.Container {
       this.drawNodeGraphics()
 
       if (shouldColorEdge) {
-        if (wentUp) { this.drawTopEdge() } 
+        if (wentUp) { this.drawTopEdge() }
         else { this.drawBottomEdge() }
       }
 
@@ -178,19 +178,19 @@ export default class GraphNode extends PIXI.Container {
       const delayValue = 0
 
       await pifyTween(new TWEEN.Tween(this.colorRGB)
-      .to({ r: 1, g: 0, b: 0 }, duration * 1000)
-      .easing(TWEEN.Easing.Cubic.InOut)
-      .delay(delayValue * 1000)
-      .onUpdate(() => { 
-        // console.log(this.colorRGB)
-        this.color = PIXI.utils.rgb2hex([this.colorRGB.r, this.colorRGB.g, this.colorRGB.b])
-        this.drawNodeGraphics()
-        if (shouldColorEdge) {
-          if (wentUp) { this.drawTopEdge() } 
-          else { this.drawBottomEdge() }
-        }  
-      })
-      .start())
+        .to({ r: 1, g: 0, b: 0 }, duration * 1000)
+        .easing(TWEEN.Easing.Cubic.InOut)
+        .delay(delayValue * 1000)
+        .onUpdate(() => {
+          // console.log(this.colorRGB)
+          this.color = PIXI.utils.rgb2hex([this.colorRGB.r, this.colorRGB.g, this.colorRGB.b])
+          this.drawNodeGraphics()
+          if (shouldColorEdge) {
+            if (wentUp) { this.drawTopEdge() }
+            else { this.drawBottomEdge() }
+          }
+        })
+        .start())
 
     } else {
       this.color = this.oldColor
@@ -202,14 +202,15 @@ export default class GraphNode extends PIXI.Container {
 
   async hide(duration, delay = 0) {
     await pifyTween(new TWEEN.Tween(this)
-    .to({ alpha: 0 }, duration * 1000)
-    .easing(TWEEN.Easing.Cubic.InOut)
-    .delay(delay * 1000)
-    .start())
+      .to({ alpha: 0 }, duration * 1000)
+      .easing(TWEEN.Easing.Cubic.InOut)
+      .delay(delay * 1000)
+      .start())
   }
 
   onClick(e) {
     console.log('Clicked on: ', this.column, this.row)
+    if (this.column == 1) return
     let selection = { row: this.row, column: this.column, probability: getProbabilityForCoordinates(this.column, this.row) }
     console.log("Sel: ", selection)
     window.PACHINGO.setSelectedNode(selection)
